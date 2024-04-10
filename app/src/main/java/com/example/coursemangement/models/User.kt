@@ -5,11 +5,8 @@ import java.util.UUID
 // data class chi de luu tru du lieu chu k co logic
 data class User(
     var user_id: String = UUID.randomUUID().toString(),
-    var full_name: String,
-    var email: String,
     var username: String,
-    var address: String,
     var password: String,
     var is_active: Boolean,
-    var role_id: Number,
+    var role_id: Long,
 )
