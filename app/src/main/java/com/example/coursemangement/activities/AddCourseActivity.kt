@@ -8,12 +8,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.coursemangement.databinding.ActivityAddCourseBinding
+import com.example.coursemangement.databinding.ActivityMainBinding
 import com.example.coursemangement.db.DbHelperCourse
 import com.example.coursemangement.models.Course
 import java.util.*
 
 class AddCourseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddCourseBinding
+    private lateinit var mainBinding: ActivityMainBinding
     private lateinit var courseSelected: Course
 
     private lateinit var adapter: ArrayAdapter<Course>
@@ -77,6 +79,12 @@ class AddCourseActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+    //#endregion
+
+    //#region Get all Course
+    private fun getAllCourse() {
+
     }
     //#endregion
 

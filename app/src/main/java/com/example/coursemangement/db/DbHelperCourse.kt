@@ -61,7 +61,7 @@ class DbHelperCourse(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     @SuppressLint("Range")
-    fun showCourse(): List<Course> {
+    fun getAllCourse(): List<Course> {
         val rs: ArrayList<Course> = ArrayList<Course>()
         val sql = "SELECT * FROM $TABLE_NAME"
         val db = this.readableDatabase
@@ -94,4 +94,11 @@ class DbHelperCourse(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return rs
     }
 
+    fun deleteCourse(courseId: String): Int {
+        val db = this.writableDatabase
+        val whereClause = "${course_id_col}='$courseId'"
+        val rs = db.delete(TABLE_NAME, whereClause, null)
+        db.close()
+        return rs
+    }
 }

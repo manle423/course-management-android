@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.view.menu.MenuBuilder
 import com.example.coursemangement.activities.AddCourseActivity
+import com.example.coursemangement.activities.ShowListCourseActivity
 import com.example.coursemangement.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val i = Intent(this, ShowListCourseActivity::class.java)
+        startActivity(i)
+
+        showAllCourse()
+
+
     }
 
     //create option menu
@@ -44,5 +52,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showAllCourse() {
+        binding.btnShowAllCourse.setOnClickListener{
+            val i = Intent(this, ShowListCourseActivity::class.java)
+            startActivity(i)
+        }
     }
 }

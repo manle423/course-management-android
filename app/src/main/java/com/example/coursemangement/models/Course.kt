@@ -19,4 +19,5 @@ data class Course(
         video: String,
         category_id: Long
     ) : this(course_id, course_name, description, image, video, category_id, false)
+
 }
