@@ -28,6 +28,10 @@ class AddCourseActivity : AppCompatActivity() {
         addCourse()
         back()
 
+        // không cho chỉnh sửa id nhưng vẫn cho phép copy
+        binding.txtId.isFocusable = false
+        binding.txtId.isFocusableInTouchMode = false
+
         binding.txtCategoryId.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // Ẩn bàn phím khi nhấn Done
