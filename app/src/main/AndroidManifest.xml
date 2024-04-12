@@ -12,6 +12,12 @@
         android:theme="@style/Theme.CourseMangement"
         tools:targetApi="31">
         <activity
+            android:name=".course_layout"
+            android:exported="false" />
+        <activity
+            android:name=".TestRecyclerActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ShowListCourseActivity"
             android:exported="false" />
         <activity

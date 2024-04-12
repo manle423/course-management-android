@@ -15,6 +15,11 @@ import com.example.coursemangement.adapters.CourseAdapter
 import com.example.coursemangement.databinding.ActivityShowListCourseBinding
 import com.example.coursemangement.db.DbHelperCourse
 import com.example.coursemangement.models.Course
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.w3c.dom.Text
 
 class ShowListCourseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShowListCourseBinding
@@ -35,14 +40,12 @@ class ShowListCourseActivity : AppCompatActivity() {
     }
 
     override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
+        menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         menu?.setHeaderTitle("Course Manager")
         val inflater = MenuInflater(this)
         inflater.inflate(R.menu.context_menu, menu)
-        //get selected user
+        //get selected Course
         if (v?.id == R.id.lsvCourses) {
             val lsv = v as ListView
             val acm = menuInfo as AdapterView.AdapterContextMenuInfo
@@ -72,7 +75,62 @@ class ShowListCourseActivity : AppCompatActivity() {
         binding.lsvCourses.adapter = adapter
     }
 
-    private fun updateCourse(course: Course) {}
+
+    @SuppressLint("InflateParams", "MissingInflatedId")
+    private fun updateCourse(course: Course) {
+        val dlg = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+//        val dlgView = inflater.inflate(R.layout.activity_add_course, null)
+        val dlgView = inflater.inflate(R.layout.course_layout, null)
+        dlg.setTitle("Edit Course")
+        dlg.setMessage("Enter data below")
+        dlg.setView(dlgView)
+
+        val txtId = dlgView.findViewById(R.id.txt_id) as EditText
+        val txtName = dlgView.findViewById(R.id.txt_name) as EditText
+        val txtDescription = dlgView.findViewById(R.id.txt_description) as EditText
+        val txtImage = dlgView.findViewById(R.id.txt_image) as EditText
+        val txtVideo = dlgView.findViewById(R.id.txt_video) as EditText
+        val txtCategory = dlgView.findViewById(R.id.txt_category_id) as EditText
+
+        // show old data
+        txtId.setText(course.course_id)
+        txtName.setText(course.course_name)
+        txtDescription.setText(course.description)
+        txtImage.setText(course.image)
+        txtVideo.setText(course.video)
+        txtCategory.setText(course.category_id.toString())
+
+        // read only
+        txtId.isEnabled = false
+
+        dlg.setPositiveButton("Save", DialogInterface.OnClickListener { _, _ ->
+            val newName = txtName.text.toString()
+            val newDescription = txtDescription.text.toString()
+            val newImage = txtImage.text.toString()
+            val newVideo = txtVideo.text.toString()
+            val newCategory = txtCategory.text.toString().toLong()
+
+            val updatedCourse =
+                Course(course.course_id,
+                    newName,
+                    newDescription,
+                    newImage,
+                    newVideo,
+                    newCategory)
+            val db = DbHelperCourse(this, null)
+            val rs = db.updateCourse(updatedCourse)
+            if (rs >= 1) {
+                Toast.makeText(this, "Course updated", Toast.LENGTH_LONG).show()
+                readCourse()
+            } else Toast.makeText(this, "Error updated", Toast.LENGTH_LONG).show()
+        })
+
+        dlg.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ -> })
+        val b = dlg.create()
+        b.show()
+    }
+
 
     //#region Delete Course
     @SuppressLint("InflateParams")
@@ -83,18 +141,18 @@ class ShowListCourseActivity : AppCompatActivity() {
         dlg.setTitle("Delete Course")
         dlg.setMessage("Course: ${course.course_name} will be deleted. Are you sure?")
 //        dlg.setView(dlgView)
-        /*
-        val txtName = dlgView.findViewById(R.id.txt_name) as EditText
-        val txtDescription = dlgView.findViewById(R.id.txt_description) as EditText
+//
+//        val txtName = dlgView.findViewById(R.id.txt_name) as EditText
+//        val txtDescription = dlgView.findViewById(R.id.txt_description) as EditText
+//
+//        // show old data
+//        txtName.setText(course.course_name)
+//        txtDescription.setText(course.description)
+//
+//        // read only
+//        txtName.isEnabled = false
+//        txtDescription.isEnabled = false
 
-        // show old data
-        txtName.setText(course.course_name)
-        txtDescription.setText(course.description)
-
-        // read only
-        txtName.isEnabled = false
-        txtDescription.isEnabled = false
-        */
         dlg.setPositiveButton("Delete", DialogInterface.OnClickListener { _, _ ->
             val db = DbHelperCourse(this, null)
             val rs = db.deleteCourse(course.course_id)

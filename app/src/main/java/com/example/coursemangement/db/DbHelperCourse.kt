@@ -60,6 +60,20 @@ class DbHelperCourse(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return id
     }
 
+    fun updateCourse(course: Course): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(course_name_col, course.course_name)
+            put(description_col, course.description)
+        }
+
+        val whereClause = "${course_id_col}='${course.course_id}'"
+        val rs = db.update(TABLE_NAME, values, whereClause, null)
+        db.close()
+        return rs.toLong()
+    }
+
+
     @SuppressLint("Range")
     fun getAllCourse(): List<Course> {
         val rs: ArrayList<Course> = ArrayList<Course>()
