@@ -65,6 +65,7 @@ class DbHelperCourse(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val values = ContentValues().apply {
             put(course_name_col, course.course_name)
             put(description_col, course.description)
+            put(video_col, course.video)
         }
 
         val whereClause = "${course_id_col}='${course.course_id}'"

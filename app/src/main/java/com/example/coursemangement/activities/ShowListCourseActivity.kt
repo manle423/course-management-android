@@ -2,7 +2,8 @@ package com.example.coursemangement.activities
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuInflater
@@ -10,16 +11,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.coursemangement.R
 import com.example.coursemangement.adapters.CourseAdapter
 import com.example.coursemangement.databinding.ActivityShowListCourseBinding
 import com.example.coursemangement.db.DbHelperCourse
 import com.example.coursemangement.models.Course
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 
 class ShowListCourseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShowListCourseBinding
@@ -37,6 +34,7 @@ class ShowListCourseActivity : AppCompatActivity() {
         registerForContextMenu(binding.lsvCourses)
         readCourse()
         back()
+
     }
 
     override fun onCreateContextMenu(
@@ -63,9 +61,19 @@ class ShowListCourseActivity : AppCompatActivity() {
             R.id.mnuDelete -> {
                 deleteCourse(courseSelected)
             }
+            R.id.mnuInfo -> {
+                showCourse(courseSelected)
+            }
+            R.id.mnuWatch -> {
+                watchCourse(courseSelected)
+            }
+
         }
         return super.onContextItemSelected(item)
     }
+
+
+
 
     private fun readCourse() {
         val db = DbHelperCourse(this, null)
@@ -75,6 +83,52 @@ class ShowListCourseActivity : AppCompatActivity() {
         binding.lsvCourses.adapter = adapter
     }
 
+    // xem thông tin khóa học
+    private fun showCourse(course: Course) {
+        val dlg = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+//        val dlgView = inflater.inflate(R.layout.activity_add_course, null)
+        val dlgView = inflater.inflate(R.layout.course_layout, null)
+        dlg.setTitle("Course information")
+        dlg.setView(dlgView)
+
+
+        val txtName = dlgView.findViewById(R.id.txt_name) as EditText
+        val txtDescription = dlgView.findViewById(R.id.txt_description) as EditText
+        val txtImage = dlgView.findViewById(R.id.txt_image) as EditText
+        val txtVideo = dlgView.findViewById(R.id.txt_video) as EditText
+        val txtCategory = dlgView.findViewById(R.id.txt_category_id) as EditText
+
+        // show old data
+        txtName.setText(course.course_name)
+        txtDescription.setText(course.description)
+        txtImage.setText(course.image)
+        txtVideo.setText(course.video)
+        txtCategory.setText(course.category_id.toString())
+
+        // read only
+        txtName.isEnabled = false
+        txtDescription.isEnabled = false
+        txtImage.isEnabled = false
+        txtVideo.isEnabled = false
+        txtCategory.isEnabled = false
+
+        dlg.setPositiveButton("Đăng ký học", DialogInterface.OnClickListener { _, _ ->
+            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_LONG).show()
+        })
+
+        dlg.setNegativeButton("Trở về", DialogInterface.OnClickListener { _, _ ->
+
+        })
+        val b = dlg.create()
+        b.show()
+    }
+    // xem video khóa học
+    private fun watchCourse(course: Course) {
+        val link = course.video
+        val i = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        startActivity(i)
+    }
 
     @SuppressLint("InflateParams", "MissingInflatedId")
     private fun updateCourse(course: Course) {

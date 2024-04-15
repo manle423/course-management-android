@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mnuEdit"
-        android:title="Edit"/>
+        android:title="Sửa khóa học"/>
     <item
         android:id="@+id/mnuDelete"
-        android:title="Delete"/>
+        android:title="Xóa khóa học"/>
+    <item
+        android:id="@+id/mnuInfo"
+        android:title="Thông tin khóa học"/>
+    <item
+        android:id="@+id/mnuWatch"
+        android:title="Xem khóa học"/>
+
 </menu>

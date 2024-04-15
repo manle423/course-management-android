@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val i = Intent(this, ShowListCourseActivity::class.java)
-        startActivity(i)
+        //val i = Intent(this, ShowListCourseActivity::class.java)
+        //startActivity(i)
 
         showAllCourse()
 
