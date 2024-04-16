@@ -1,0 +1,25 @@
+ext.module_group = "com.afollestad"
+ext.module_name = "materialdialogssample"
+
+apply from: rootProject.file("gradle/android_application_config.gradle")
+
+dependencies {
+  implementation project(':core')
+  implementation project(':input')
+  implementation project(':files')
+  implementation project(':color')
+  implementation project(':datetime')
+  implementation project(':bottomsheets')
+  implementation project(':lifecycle')
+
+  implementation deps.kotlin.stdlib8
+
+  implementation deps.androidx.core
+  implementation deps.androidx.grid_layout
+  implementation deps.androidx.recycler_view
+  implementation deps.google_material
+
+  implementation deps.afollestad.assent
+
+  debugImplementation deps.leak_canary
+}
