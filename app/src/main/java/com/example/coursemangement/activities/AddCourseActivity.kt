@@ -1,6 +1,8 @@
 package com.example.coursemangement.activities
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -15,10 +17,6 @@ import java.util.*
 
 class AddCourseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddCourseBinding
-    private lateinit var mainBinding: ActivityMainBinding
-    private lateinit var courseSelected: Course
-
-    private lateinit var adapter: ArrayAdapter<Course>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,12 +80,6 @@ class AddCourseActivity : AppCompatActivity() {
     }
     //#endregion
 
-    //#region Get all Course
-    private fun getAllCourse() {
-
-    }
-    //#endregion
-
     //#region Clear
     private fun clearTextBox() {
         binding.txtName.text.clear()
@@ -101,10 +93,10 @@ class AddCourseActivity : AppCompatActivity() {
     //#region Back
     private fun back() {
         binding.btnBack.setOnClickListener {
+            val resultIntent = Intent()
+            setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
     }
-
     //#endregion
-
 }

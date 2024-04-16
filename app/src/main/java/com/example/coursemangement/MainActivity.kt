@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.view.menu.MenuBuilder
 import com.example.coursemangement.activities.AddCourseActivity
 import com.example.coursemangement.activities.ShowListCourseActivity
+//import com.example.coursemangement.activities.ShowListCourseActivityNew
 import com.example.coursemangement.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -46,10 +47,10 @@ class MainActivity : AppCompatActivity() {
 //                val i = Intent(applicationContext, LoginActivity::class.java)
 //                startActivityForResult()
 //            }
-            R.id.mnuAddCourse -> {
-                val i = Intent(applicationContext, AddCourseActivity::class.java)
-                startActivity(i)
-            }
+//            R.id.mnuAddCourse -> {
+//                val i = Intent(applicationContext, AddCourseActivity::class.java)
+//                startActivity(i)
+//            }
         }
         return super.onOptionsItemSelected(item)
     }

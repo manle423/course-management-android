@@ -14,9 +14,9 @@
         <activity
             android:name=".course_layout"
             android:exported="false" />
-        <activity
-            android:name=".TestRecyclerActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.ShowListCourseActivityNew"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.ShowListCourseActivity"
             android:exported="false" />

@@ -1,6 +1,7 @@
 package com.example.coursemangement.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coursemangement.R
@@ -19,6 +21,7 @@ import com.example.coursemangement.db.DbHelperCourse
 import com.example.coursemangement.models.Course
 
 class ShowListCourseActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityShowListCourseBinding
     private lateinit var courseSelected: Course
 
@@ -34,6 +37,7 @@ class ShowListCourseActivity : AppCompatActivity() {
         registerForContextMenu(binding.lsvCourses)
         readCourse()
         back()
+        addCourse()
 
     }
 
@@ -42,7 +46,7 @@ class ShowListCourseActivity : AppCompatActivity() {
     ) {
         menu?.setHeaderTitle("Course Manager")
         val inflater = MenuInflater(this)
-        inflater.inflate(R.menu.context_menu, menu)
+        inflater.inflate(R.menu.context_menu_course, menu)
         //get selected Course
         if (v?.id == R.id.lsvCourses) {
             val lsv = v as ListView
@@ -71,8 +75,6 @@ class ShowListCourseActivity : AppCompatActivity() {
         }
         return super.onContextItemSelected(item)
     }
-
-
 
 
     private fun readCourse() {
@@ -123,6 +125,7 @@ class ShowListCourseActivity : AppCompatActivity() {
         val b = dlg.create()
         b.show()
     }
+
     // xem video khóa học
     private fun watchCourse(course: Course) {
         val link = course.video
@@ -166,12 +169,14 @@ class ShowListCourseActivity : AppCompatActivity() {
             val newCategory = txtCategory.text.toString().toLong()
 
             val updatedCourse =
-                Course(course.course_id,
+                Course(
+                    course.course_id,
                     newName,
                     newDescription,
                     newImage,
                     newVideo,
-                    newCategory)
+                    newCategory
+                )
             val db = DbHelperCourse(this, null)
             val rs = db.updateCourse(updatedCourse)
             if (rs >= 1) {
@@ -231,6 +236,21 @@ class ShowListCourseActivity : AppCompatActivity() {
         }
     }
     //#endregion
+
+    //#region Add Course
+    private fun addCourse() {
+        binding.btnAdd.setOnClickListener {
+            val i = Intent(applicationContext, AddCourseActivity::class.java)
+            addCourseLauncher.launch(i)
+        }
+    }
+    //#endregion
+
+    private val addCourseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            readCourse()
+        }
+    }
 
     private fun reload() {
         adapter.notifyDataSetChanged()
