@@ -1,12 +1,12 @@
 {
   "scripts": {
-    "format": "prettier --write --single-quote --trailing-comma all --tab-width 4 'server/**/*.{js,scss,json}'",
+    "format": "prettier --write --single-quote --trailing-comma all --tab-width 2 'server/**/*.{js,scss,json}'",
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/**/*.{js,scss,json}": "prettier --write --single-quote --trailing-comma all --tab-width 4"
+    "src/**/*.{js,scss,json}": "prettier --write --single-quote --trailing-comma all --tab-width 2"
   },
   "devDependencies": {
     "husky": "^8.0.0",
