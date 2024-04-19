@@ -14,13 +14,15 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// [GET:] course by id
 router.get('/:id', async (req, res, next) => {
   try {
-    const course = await courseService.search(req.params.id);
+    const course = await courseService.getCourse(req.params.id);
     res.json(course);
   } catch (error) {
     console.error('Error fetching courses:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 module.exports = router;

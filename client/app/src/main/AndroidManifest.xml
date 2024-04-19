@@ -9,11 +9,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CourseMangement"
+        android:theme="@style/Theme.CourseManagement"
         tools:targetApi="31">
-        <activity
-            android:name=".course_layout"
-            android:exported="false" />
 <!--        <activity-->
 <!--            android:name=".activities.ShowListCourseActivityNew"-->
 <!--            android:exported="false" />-->

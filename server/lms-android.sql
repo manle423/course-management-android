@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2024 at 11:03 AM
--- Server version: 8.0.31
+-- Generation Time: Apr 19, 2024 at 05:58 PM
+-- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -21,6 +21,22 @@ SET time_zone = "+00:00";
 -- Database: `lms-android`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_course` (IN `offset` INT, IN `limitPerPage` INT)   BEGIN
+    SELECT * FROM courses LIMIT offset, limitPerPage;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_course_by_id` (IN `id` VARCHAR(255))   BEGIN
+    SELECT *
+    FROM courses
+    WHERE course_id = id;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -29,7 +45,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categories` (
   `category_id` bigint NOT NULL,
-  `category_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `category_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -47,11 +63,11 @@ INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 --
 
 CREATE TABLE `courses` (
-  `course_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `course_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `video` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `course_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `course_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `category_id` bigint DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -72,9 +88,9 @@ INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `vide
 --
 
 CREATE TABLE `orders` (
-  `order_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `course_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `order_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `course_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -85,7 +101,7 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `roles` (
   `role_id` bigint NOT NULL,
-  `role_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -104,9 +120,9 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 --
 
 CREATE TABLE `users` (
-  `user_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
   `role_id` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
