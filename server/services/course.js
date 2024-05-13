@@ -1,4 +1,4 @@
-const db = require('./db');
+const db = require('./databases');
 const helper = require('../helper');
 const config = require('../config');
 
@@ -9,13 +9,13 @@ async function getAllCourse(page = 1) {
   // const data = helper.emptyOrRows(row);
   // return data;
   const offSet = helper.getOffset(page, config.listPerPage);
-  const [rows] = await db.callSpGetAllCourses(offSet, config.listPerPage);
+  const [rows] = await db.course.callSpGetAllCourses(offSet, config.listPerPage);
   const data = helper.emptyOrRows(rows);
   return data;
 }
 
 async function getCourse(id) {
-  const [rows] = await db.callSpGetCourse(id);
+  const [rows] = await db.course.callSpGetCourse(id);
   const data = helper.emptyOrRows(rows);
   return data;
 }
