@@ -5,7 +5,11 @@ async function callSpCreateUser(id, username, password) {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute(`CALL sp_create_user(?, ?, ?)`, [id, username, password]);
+    const [rows] = await conn.execute(`CALL sp_create_user(?, ?, ?)`, [
+      id,
+      username,
+      password,
+    ]);
     return rows;
   } catch (error) {
     throw error;
@@ -20,7 +24,9 @@ async function checkUsernameExists(username) {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute(`CALL sp_check_username_exists(?)`, [username]);
+    const [rows] = await conn.execute(`CALL sp_check_username_exists(?)`, [
+      username,
+    ]);
     return rows;
   } catch (error) {
     throw error;
@@ -35,7 +41,10 @@ async function callSpGetAllUsers(offset, limitPerPage) {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_get_all_users(?, ?)', [offset, limitPerPage]);
+    const [rows] = await conn.execute('CALL sp_get_all_users(?, ?)', [
+      offset,
+      limitPerPage,
+    ]);
     return rows;
   } catch (error) {
     throw error;

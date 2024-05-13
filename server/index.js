@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const route = require("./routes");
+const route = require('./routes');
 
 const port = 3000;
-const host = "localhost";
+const host = 'localhost';
 
 //#region Middleware
 

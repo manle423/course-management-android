@@ -20,7 +20,10 @@ async function callSpGetAllCourses(offset, limitPerPage) {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_get_all_courses(?, ?)', [offset, limitPerPage]);
+    const [rows] = await conn.execute('CALL sp_get_all_courses(?, ?)', [
+      offset,
+      limitPerPage,
+    ]);
     return rows;
   } catch (error) {
     throw error;

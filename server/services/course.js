@@ -9,7 +9,10 @@ async function getAllCourse(page = 1) {
   // const data = helper.emptyOrRows(row);
   // return data;
   const offSet = helper.getOffset(page, config.listPerPage);
-  const [rows] = await db.course.callSpGetAllCourses(offSet, config.listPerPage);
+  const [rows] = await db.course.callSpGetAllCourses(
+    offSet,
+    config.listPerPage,
+  );
   const data = helper.emptyOrRows(rows);
   return data;
 }

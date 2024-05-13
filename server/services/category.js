@@ -4,7 +4,10 @@ const config = require('../config');
 
 async function getAllCategories(page = 1) {
   const offSet = helper.getOffset(page, config.listPerPage);
-  const [rows] = await db.category.callSpGetAllCategories(offSet, config.listPerPage);
+  const [rows] = await db.category.callSpGetAllCategories(
+    offSet,
+    config.listPerPage,
+  );
   const data = helper.emptyOrRows(rows);
   return data;
 }

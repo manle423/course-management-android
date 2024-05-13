@@ -16,7 +16,6 @@ router.post('/', async (req, res, next) => {
 
 // [GET:] get user by id
 
-
 // [GET:] get all users
 router.get('/', async (req, res, next) => {
   try {
@@ -35,6 +34,5 @@ router.get('/', async (req, res, next) => {
 
 // [PUT:] update user by id
 // [DELETE:] delete user by id
-
 
 module.exports = router;

@@ -5,7 +5,10 @@ async function callSpGetAllCategories(offset, limitPerPage) {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_get_all_categories(?, ?)', [offset, limitPerPage]);
+    const [rows] = await conn.execute('CALL sp_get_all_categories(?, ?)', [
+      offset,
+      limitPerPage,
+    ]);
     return rows;
   } catch (error) {
     throw error;
