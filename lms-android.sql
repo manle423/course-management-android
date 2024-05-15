@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 15, 2024 at 06:18 AM
+-- Generation Time: May 15, 2024 at 04:03 PM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -25,6 +25,11 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_to_blacklist` (IN `p_token_value` TEXT)   BEGIN
+    INSERT INTO blacklists (token_value)
+    VALUES (p_token_value);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_is_active` (IN `p_id` CHAR(36))   BEGIN
     DECLARE user_count INT;
 
@@ -55,6 +60,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_is_admin` (IN `p_user_id` 
 
     -- Return the result
     SELECT is_user_admin AS is_user_admin;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_token_in_blacklist` (IN `p_token_value` TEXT)   BEGIN
+    DECLARE v_count INT;
+
+    SELECT COUNT(*) INTO v_count
+    FROM blacklists
+    WHERE token_value = p_token_value;
+
+    IF v_count > 0 THEN
+        SELECT TRUE AS token_exists;
+    ELSE
+        SELECT FALSE AS token_exists;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_username_exists` (IN `p_username` VARCHAR(255))   BEGIN
@@ -124,6 +143,24 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `blacklists`
+--
+
+CREATE TABLE `blacklists` (
+  `id` int NOT NULL,
+  `token_value` text COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blacklists`
+--
+
+INSERT INTO `blacklists` (`id`, `token_value`) VALUES
+(1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWE4MTAwYy1mNzQ4LTRhNjEtOTAwYy0wOTAwYWY0MzczMmQiLCJ1c2VybmFtZSI6Im1vZGVyYXRvciIsInJvbGVfaWQiOjIsImlhdCI6MTcxNTc4Mjk5NywiZXhwIjoxNzE1ODY5Mzk3fQ.pvLR3roFYj0wUiiz4npfZOrb0zJXcZELmwDiX6FrywE');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
@@ -139,7 +176,8 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`category_id`, `category_name`) VALUES
 (3, 'Category 3'),
 (1, 'Category A'),
-(2, 'Category B');
+(2, 'Category B'),
+(4, 'Category C');
 
 -- --------------------------------------------------------
 
@@ -162,9 +200,23 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `video`, `category_id`, `is_deleted`) VALUES
+('01ea24fa-b263-49a5-a0e6-02e351a43b8e', 'Course2', 'Des1', '', '', 2, 0),
+('080f2d5f-f55d-4b4e-9e01-a9906777ce19', 'Course2', 'Des1', '', '', 2, 0),
+('1258005c-64d8-446e-aae3-dc60faae0f7c', 'Course2', 'Des1', '', '', 2, 0),
+('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Course2', 'Des1', '', '', 2, 0),
+('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Course1', 'Des1', '', '', 2, 0),
+('560f8d72-3cfa-4b11-84ba-11eb13740596', 'Course1', 'Des1', '', '', 2, 0),
+('6075ba19-e197-4cbc-b157-1bff71ca8138', 'Course2', 'Des1', '', '', 2, 0),
+('6a028d2c-e1ef-4664-94a9-12b2ccf34495', 'Course2', 'Des1', '', '', 2, 0),
+('7dfa2d8f-2e5b-4164-9ec4-1731b58488a4', 'Course2', 'Des1', '', '', 2, 0),
+('868afe24-5820-415e-9c9e-1dd9c5552304', 'Course2', 'Des1', '', '', 2, 0),
+('8bc2edc8-efe2-4d20-a3fc-6702f25a2b7f', 'Course2', 'Des1', '', '', 2, 0),
+('a3cd84da-bb66-4bbe-a09f-58d2d47dafd4', 'Course2', 'Des1', '', '', 2, 0),
+('c6f13e0c-8f5a-4802-9113-f1c457752d19', 'Course2', 'Des1', '', '', 2, 0),
 ('course1', 'Course 1', 'Description for Course 1', 'image1.jpg', 'video1.mp4', 1, 0),
 ('course2', 'Course 2', 'Description for Course 2', 'image2.jpg', 'video2.mp4', 2, 0),
 ('course3', 'Course 3', 'Description for Course 3', 'image3.jpg', 'video3.mp4', 1, 0),
+('e1c25b47-e4a1-4a96-b68c-da552c65e83b', 'Course2', 'Des1', '', '', 2, 0),
 ('e603f757-b9e1-4153-ade0-7d7d88deb9fa', 'Course1', 'Des1', '', '', 2, 0);
 
 -- --------------------------------------------------------
@@ -224,11 +276,18 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `is_active`, `role_id`) 
 ('8a164fa7-95f7-4554-9359-93a199e4f403', 'user1', '$2b$10$g2Sb8Nd3W.ZRLgKRWzJTZ.SHFJv3DG32wjq1UzJrhSnevSMeWsFGK', 1, 3),
 ('8c70dca9-edf4-4cb3-92d1-2cbbacc19c38', 'admin', '$2b$10$pklxTyC58whxFyfVxoh6ke.AEXqZydaN8qrxw/jEA0lfamd6EeCMm', 1, 1),
 ('b1a8100c-f748-4a61-900c-0900af43732d', 'moderator', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
-('dafddefa-86f1-484a-a272-fcdcfc08bb4f', 'user', '$2b$10$taGbcEN4vcOpkZ/CdRIonusgY2tfK6l6TdqavXXFE.Et1dzr7O356', 1, 3);
+('dafddefa-86f1-484a-a272-fcdcfc08bb4f', 'user', '$2b$10$taGbcEN4vcOpkZ/CdRIonusgY2tfK6l6TdqavXXFE.Et1dzr7O356', 1, 3),
+('f6db8955-a680-438d-8c63-6dcf7222e2e6', 'test', '$2b$10$6mGpKO4sli1qL/ZM40Ii8ejB8EN/YzUKaPm7DBeW81dGLHKcgS5yi', 1, 3);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `blacklists`
+--
+ALTER TABLE `blacklists`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -272,10 +331,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `blacklists`
+--
+ALTER TABLE `blacklists`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `category_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `roles`
