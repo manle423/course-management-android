@@ -1,10 +1,10 @@
-const mysql = require('mysql2/promise');
-const config = require('../../config');
-const category = require('./category');
-const course = require('./course');
-const user = require('./user');
+const mysql = require("mysql2/promise");
+const config = require("../../config");
+const category = require("./category");
+const course = require("./course");
+const user = require("./user");
 
-async function query(sql, params) {
+const query = async (sql, params) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
@@ -17,7 +17,7 @@ async function query(sql, params) {
       conn.end();
     }
   }
-}
+};
 
 module.exports = {
   query,

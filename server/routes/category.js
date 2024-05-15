@@ -2,6 +2,18 @@ const express = require('express');
 const router = express.Router();
 const categoryService = require('../services/category');
 
+// [POST:] create category
+router.post('/', async (req, res, next) => {
+  const { name } = req.body;
+  try {
+    const rs = await categoryService.createCategory(name);
+    res.json(rs);
+  } catch (error) {
+    console.error('Error create category:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // [GET:] all categories
 router.get('/', async (req, res, next) => {
   try {

@@ -3,8 +3,9 @@ const helper = require('../helper');
 const config = require('../config');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
-// const { validationResult } = require("express-validator");
 
+// const { validationResult } = require("express-validator");
+/*
 async function createUser(username, password, retypePassword) {
   const id = uuidv4();
   try {
@@ -82,15 +83,21 @@ function isValidInput(username, password, retypePassword) {
 
   return { success: true }; // All checks passed
 }
-
+*/
 async function getAllUsers(page = 1) {
   const offSet = helper.getOffset(page, config.listPerPage);
   const [rows] = await db.user.callSpGetAllUsers(offSet, config.listPerPage);
   const data = helper.emptyOrRows(rows);
   return data;
-}
+};
+
+const getUser = async (id) => {
+  const [rows] = await db.user.callSpGetUser(id);
+  const data = helper.emptyOrRows(rows);
+  return data;
+};
 
 module.exports = {
-  createUser,
   getAllUsers,
+  getUser,
 };

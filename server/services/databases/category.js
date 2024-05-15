@@ -1,7 +1,22 @@
 const mysql = require('mysql2/promise');
 const config = require('../../config');
 
-async function callSpGetAllCategories(offset, limitPerPage) {
+const callSpCreateCategory = async(name) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute(`CALL sp_create_category(?)`, [name]);
+    return rows;
+  } catch (error) {
+      throw error;
+  } finally {
+    if (conn) {
+      await conn.end();
+    }
+  }
+}
+
+const callSpGetAllCategories = async(offset, limitPerPage) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
@@ -14,12 +29,12 @@ async function callSpGetAllCategories(offset, limitPerPage) {
     throw error;
   } finally {
     if (conn) {
-      conn.end();
+      await conn.end();
     }
   }
 }
 
-async function callSpGetCategory(id) {
+const callSpGetCategory = async(id) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
@@ -29,12 +44,13 @@ async function callSpGetCategory(id) {
     throw error;
   } finally {
     if (conn) {
-      conn.end();
+      await conn.end();
     }
   }
 }
 
 module.exports = {
+  callSpCreateCategory,
   callSpGetAllCategories,
   callSpGetCategory,
 };
