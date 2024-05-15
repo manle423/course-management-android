@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const db = require("./databases");
 const helper = require("../helper");
-require("dotenv").config(); 
+require("dotenv").config();
 
 const login = async (username, password) => {
   try {
@@ -17,15 +17,14 @@ const login = async (username, password) => {
     if (!passwordMatch) {
       throw new Error("Incorrect password");
     }
-    console.log(process.env.JWT_SECRET_KEY);
     const token = jwt.sign(
-      { userId: user.user_id, username: user.username },
+      { userId: user.user_id, username: user.username, role_id: user.role_id },
       process.env.JWT_SECRET_KEY,
-      // {
-      //   expiresIn: 86400,
-      // }
+      {
+        expiresIn: 86400,
+      }
     );
-
+    // const token = jwt.sign({ userId: user.user_id, username: user.username }, "1");
     return token;
   } catch (error) {
     throw error;
