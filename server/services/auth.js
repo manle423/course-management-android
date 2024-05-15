@@ -17,6 +17,7 @@ const login = async (username, password) => {
     if (!passwordMatch) {
       throw new Error("Incorrect password");
     }
+
     const token = jwt.sign(
       { userId: user.user_id, username: user.username, role_id: user.role_id },
       process.env.JWT_SECRET_KEY,
@@ -60,6 +61,20 @@ const register = async (username, password, retypePassword) => {
     const data = helper.emptyOrRows(rows);
     // return rows;
     return { status: "success", data: data };
+  } catch (error) {
+    return { status: "error", error: error.message };
+  }
+};
+
+const logout = async (token) => {
+  try {
+    const check = await db.blacklist.checkTokenInBlacklist(token);
+    // console.log(check);
+    if (check) {
+      return { status: "success", "msg": "You are logged out" };
+    }
+    await db.blacklist.callSpAddToBlacklist(token);
+    return { status: "success", "msg": "You are logged out" };
   } catch (error) {
     return { status: "error", error: error.message };
   }
@@ -117,4 +132,5 @@ const isValidInput = (username, password, retypePassword) => {
 module.exports = {
   login,
   register,
+  logout,
 };

@@ -3,6 +3,7 @@ const config = require("../../config");
 const category = require("./category");
 const course = require("./course");
 const user = require("./user");
+const blacklist = require("./blacklist");
 
 const query = async (sql, params) => {
   let conn;
@@ -24,4 +25,5 @@ module.exports = {
   category,
   course,
   user,
+  blacklist,
 };

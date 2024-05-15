@@ -30,4 +30,4 @@ const extractToken = (req) => {
   return null;
 };
 
-module.exports = { verifyToken };
+module.exports = { verifyToken, extractToken };

@@ -3,7 +3,7 @@ const helper = require("../helper");
 const config = require("../config");
 const { v4: uuidv4 } = require('uuid');
 
-const getAllCourse = async (page = 1) => {
+const getAllCourses = async (page = 1) => {
   // const offSet = helper.getOffset(page, config.listPerPage);
   // const sql = `SELECT * FROM COURSES LIMIT ${offSet}, ${config.listPerPage}`;
   // const row = await db.query(sql);
@@ -44,6 +44,6 @@ const getCourse = async (id) => {
 
 module.exports = {
   createCourse,
-  getAllCourse,
+  getAllCourses,
   getCourse,
 };
