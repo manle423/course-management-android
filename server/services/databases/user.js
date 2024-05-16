@@ -27,7 +27,7 @@ const checkUsernameExists = async (username) => {
     const [rows] = await conn.execute(`CALL sp_check_username_exists(?)`, [
       username,
     ]);
-    return rows;
+    return rows[0][0].username_available;
   } catch (error) {
     throw error;
   } finally {

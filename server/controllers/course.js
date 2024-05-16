@@ -8,16 +8,6 @@ const courseService = require("../services/course");
 const createCourse = async (req, res, next) => {
   const { name, description, image, video, category_id } = req.body;
 
-  // Extract user information from request object
-  const { role_id } = req.user;
-
-  // Check if user is a moderator
-  if (role_id !== 2) {
-    return res
-      .status(403)
-      .json({ error: "Forbidden: Only moderators can create courses" });
-  }
-
   try {
     const rs = await courseService.createCourse(
       name,

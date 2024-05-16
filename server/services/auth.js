@@ -41,9 +41,9 @@ const register = async (username, password, retypePassword) => {
     }
 
     const isUsernameExists = await db.user.checkUsernameExists(username);
-    const check = isUsernameExists[0][0].username_available;
+    // const check = isUsernameExists[0][0].username_available;
     // console.log(isUsernameExists[0][0].username_available);
-    if (check == 1) {
+    if (isUsernameExists == 1) {
       return { status: "error", error: "Username already exists" };
     }
 

@@ -33,6 +33,11 @@ const login = async (req, res, next) => {
   }
 };
 
+/**
+ * @route POST auth/logout
+ * @desc Log out a user
+ * @access Public
+ */
 const logout = async (req, res, next) => {
   const token = extractToken(req);
   // console.log(token);
