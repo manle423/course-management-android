@@ -87,7 +87,7 @@ async function getAllUsers(page = 1) {
   const [rows] = await db.user.callSpGetAllUsers(offSet, config.listPerPage);
   const data = helper.emptyOrRows(rows);
   return data;
-};
+}
 
 const getUser = async (id) => {
   const [rows] = await db.user.callSpGetUser(id);

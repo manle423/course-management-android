@@ -1,6 +1,6 @@
-const db = require("./databases");
-const helper = require("../helper");
-const config = require("../config");
+const db = require('./databases');
+const helper = require('../helper');
+const config = require('../config');
 
 const getAllCourses = async (page = 1) => {
   // const offSet = helper.getOffset(page, config.listPerPage);
@@ -11,7 +11,7 @@ const getAllCourses = async (page = 1) => {
   const offSet = helper.getOffset(page, config.listPerPage);
   const [rows] = await db.course.callSpGetAllCourses(
     offSet,
-    config.listPerPage
+    config.listPerPage,
   );
   const data = helper.emptyOrRows(rows);
   return data;
@@ -26,12 +26,12 @@ const createCourse = async (name, description, image, video, category_id) => {
       description,
       image,
       video,
-      category_id
+      category_id,
     );
     const data = helper.emptyOrRows(rows);
-    return { status: "success", data: data };
+    return { status: 'success', data: data };
   } catch (error) {
-    return { status: "error", error: error.message };
+    return { status: 'error', error: error.message };
   }
 };
 

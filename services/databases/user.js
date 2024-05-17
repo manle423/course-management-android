@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise");
-const config = require("../../config");
+const mysql = require('mysql2/promise');
+const config = require('../../config');
 
 const callSpCreateUser = async (id, username, password) => {
   let conn;
@@ -41,7 +41,7 @@ const callSpGetAllUsers = async (offset, limitPerPage) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute("CALL sp_get_all_users(?, ?)", [
+    const [rows] = await conn.execute('CALL sp_get_all_users(?, ?)', [
       offset,
       limitPerPage,
     ]);
@@ -59,7 +59,7 @@ const callSpGetUser = async (id) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute("CALL sp_search_user_by_id(?)", [id]);
+    const [rows] = await conn.execute('CALL sp_search_user_by_id(?)', [id]);
     return rows;
   } catch (error) {
     throw error;
@@ -104,7 +104,7 @@ const callSpGetUserByUsername = async (username) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute("CALL sp_search_user_by_username(?)", [
+    const [rows] = await conn.execute('CALL sp_search_user_by_username(?)', [
       username,
     ]);
     return rows[0];

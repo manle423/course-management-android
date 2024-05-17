@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise");
-const config = require("../../config");
+const mysql = require('mysql2/promise');
+const config = require('../../config');
 
 const callSpCreateCourse = async (
   id,
@@ -7,7 +7,7 @@ const callSpCreateCourse = async (
   description,
   image,
   video,
-  category_id
+  category_id,
 ) => {
   let conn;
   // console.log(id);
@@ -15,7 +15,7 @@ const callSpCreateCourse = async (
     conn = await mysql.createConnection(config.db);
     const [rows] = await conn.execute(
       `CALL sp_create_course(?, ?, ?, ?, ?, ?)`,
-      [id, name, description, image, video, category_id]
+      [id, name, description, image, video, category_id],
     );
     return rows;
   } catch (error) {
@@ -46,7 +46,7 @@ const callSpGetAllCourses = async (offset, limitPerPage) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute("CALL sp_get_all_courses(?, ?)", [
+    const [rows] = await conn.execute('CALL sp_get_all_courses(?, ?)', [
       offset,
       limitPerPage,
     ]);

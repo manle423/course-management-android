@@ -1,6 +1,6 @@
-const db = require("./databases");
-const helper = require("../helper");
-const config = require("../config");
+const db = require('./databases');
+const helper = require('../helper');
+const config = require('../config');
 
 const createCategory = async (name) => {
   try {
@@ -16,7 +16,7 @@ const getAllCategories = async (page = 1) => {
   const offSet = helper.getOffset(page, config.listPerPage);
   const [rows] = await db.category.callSpGetAllCategories(
     offSet,
-    config.listPerPage
+    config.listPerPage,
   );
   const data = helper.emptyOrRows(rows);
   return data;

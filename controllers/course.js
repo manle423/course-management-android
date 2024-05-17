@@ -1,4 +1,4 @@
-const courseService = require("../services/course");
+const courseService = require('../services/course');
 
 /**
  * @route POST courses/
@@ -14,12 +14,12 @@ const createCourse = async (req, res, next) => {
       description,
       image,
       video,
-      category_id
+      category_id,
     );
     res.json(rs);
   } catch (error) {
-    console.error("Error creating course:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error creating course:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -34,8 +34,8 @@ const getAllCourses = async (req, res, next) => {
     const courses = await courseService.getAllCourses(page);
     res.json(courses);
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -49,8 +49,8 @@ const getCourse = async (req, res, next) => {
     const course = await courseService.getCourse(req.params.id);
     res.json(course);
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

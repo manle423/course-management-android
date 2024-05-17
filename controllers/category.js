@@ -1,4 +1,4 @@
-const categoryService = require("../services/category");
+const categoryService = require('../services/category');
 
 /**
  * @route POST categories/
@@ -11,8 +11,8 @@ const createCategory = async (req, res, next) => {
     const rs = await categoryService.createCategory(name);
     res.json(rs);
   } catch (error) {
-    console.error("Error create category:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error create category:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -27,8 +27,8 @@ const getAllCategories = async (req, res, next) => {
     const categories = await categoryService.getAllCategories(page);
     res.json(categories);
   } catch (error) {
-    console.error("Error fetching categories:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -45,10 +45,10 @@ const getCategoryById = async (req, res, next) => {
     console.error('Error fetching category:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
 
 module.exports = {
   createCategory,
   getAllCategories,
-  getCategoryById
+  getCategoryById,
 };

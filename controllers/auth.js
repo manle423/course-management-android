@@ -1,5 +1,5 @@
-const authService = require("../services/auth");
-const { extractToken } = require("../middlewares/authMiddleware");
+const authService = require('../services/auth');
+const { extractToken } = require('../middlewares/authMiddleware');
 
 /**
  * @route POST auth/register
@@ -12,8 +12,8 @@ const register = async (req, res, next) => {
     const rs = await authService.register(username, password, retypePassword);
     res.json(rs);
   } catch (error) {
-    console.error("Error create user:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error create user:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -28,8 +28,8 @@ const login = async (req, res, next) => {
     const token = await authService.login(username, password);
     res.json({ token });
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -45,8 +45,8 @@ const logout = async (req, res, next) => {
     const rs = await authService.logout(token);
     res.json(rs);
   } catch (error) {
-    console.error("Error during logout:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error during logout:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

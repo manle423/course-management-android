@@ -1,4 +1,4 @@
-const userService = require("../services/user");
+const userService = require('../services/user');
 
 /**
  * @route GET users/
@@ -15,8 +15,8 @@ const getAllUsers = async (req, res, next) => {
     // };
     res.json(users);
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -30,8 +30,8 @@ const getUser = async (req, res, next) => {
     const user = await userService.getUser(req.params.id);
     res.json(user);
   } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
