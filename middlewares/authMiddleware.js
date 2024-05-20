@@ -4,7 +4,7 @@ require('dotenv').config();
 const ROLES = {
   ADMIN: 1,
   MODERATOR: 2,
-  USER: 3, // Ví dụ thêm vai trò người dùng bình thường
+  USER: 3,
 };
 
 const verifyToken = (req, res, next) => {
