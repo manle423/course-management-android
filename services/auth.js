@@ -21,10 +21,9 @@ const login = async (username, password) => {
       { userId: user.user_id, username: user.username, role_id: user.role_id },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: 86400,
+        expiresIn: '1d',
       },
     );
-    // const token = jwt.sign({ userId: user.user_id, username: user.username }, "1");
     return token;
   } catch (error) {
     throw error;
@@ -56,10 +55,10 @@ const register = async (username, password, retypePassword) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const rows = await db.user.callSpCreateUser(id, username, hashedPassword);
-    // console.log(rows);
+    console.log(rows);
     const data = helper.emptyOrRows(rows);
     // return rows;
-    return { status: 'success', data: data };
+    return { status: 'success', data: [data], message: 'Register successful' };
   } catch (error) {
     return { status: 'error', error: error.message };
   }
@@ -70,10 +69,10 @@ const logout = async (token) => {
     const check = await db.blacklist.checkTokenInBlacklist(token);
     // console.log(check);
     if (check) {
-      return { status: 'success', msg: 'You are logged out' };
+      return { status: 'success', message: 'You are logged out' };
     }
     await db.blacklist.callSpAddToBlacklist(token);
-    return { status: 'success', msg: 'You are logged out' };
+    return { status: 'success', message: 'You are logged out' };
   } catch (error) {
     return { status: 'error', error: error.message };
   }

@@ -26,6 +26,7 @@ const login = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const token = await authService.login(username, password);
+    console.log('Token', token);
     res.json({ token });
   } catch (error) {
     console.error('Error during login:', error);

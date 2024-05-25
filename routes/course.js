@@ -18,6 +18,9 @@ router.post(
   courseController.createCourse,
 );
 
+// [GET:] search course by name
+router.get('/search', courseController.searchCourses);
+
 // [GET:] course by id
 router.get('/:id', courseController.getCourse);
 

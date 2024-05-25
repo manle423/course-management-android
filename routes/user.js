@@ -5,8 +5,10 @@ const {
   verifyToken,
   checkRole,
   checkUserOrAdmin,
+  checkIsThatUser,
   ROLES,
 } = require('../middlewares/authMiddleware');
+const { route } = require('./role');
 
 // [GET:] get user by id
 router.get('/:id', verifyToken, checkUserOrAdmin, userController.getUser);
@@ -20,6 +22,8 @@ router.get(
 );
 
 // [PUT:] update user by id
+router.put('/:id', verifyToken, checkIsThatUser, userController.changeInfo);
+
 // [DELETE:] delete user by id
 
 module.exports = router;

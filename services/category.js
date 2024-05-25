@@ -6,7 +6,9 @@ const createCategory = async (name) => {
   try {
     const rows = await db.category.callSpCreateCategory(name);
     const data = helper.emptyOrRows(rows);
-    return { status: 'success', data: data };
+    if (data.affectedRows > 0) {
+      return { status: 'success', message: 'Create category successfully' };
+    }
   } catch (error) {
     return { status: 'error', error: error.message };
   }
@@ -28,8 +30,11 @@ const getCategoryById = async (id) => {
   return data;
 };
 
+const getCategoryByName = async (name) => {};
+
 module.exports = {
   createCategory,
   getAllCategories,
   getCategoryById,
+  getCategoryByName,
 };

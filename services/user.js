@@ -95,7 +95,18 @@ const getUser = async (id) => {
   return data;
 };
 
+const changeInfo = async (id, full_name) => {
+  try {
+    const rows = await db.user.callSpChangeInfo(id, full_name);
+    const data = helper.emptyOrRows(rows);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
+  changeInfo,
 };

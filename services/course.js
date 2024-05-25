@@ -41,8 +41,16 @@ const getCourse = async (id) => {
   return data;
 };
 
+const searchCourses = async (searchTerm) => {
+  console.log(searchTerm);
+  const [rows] = await db.course.callSpSearchCourses(searchTerm);
+  const data = helper.emptyOrRows(rows);
+  return data;
+};
+
 module.exports = {
   createCourse,
   getAllCourses,
   getCourse,
+  searchCourses,
 };

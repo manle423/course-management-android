@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
 const config = require('../../config');
+const db = require('./index');
 
 const callSpCreateUser = async (id, username, password) => {
   let conn;
@@ -117,6 +118,24 @@ const callSpGetUserByUsername = async (username) => {
   }
 };
 
+const callSpChangeInfo = async (id, full_name) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute('CALL sp_change_info(?, ?)', [
+      id,
+      full_name,
+    ]);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      await conn.end();
+    }
+  }
+};
+
 module.exports = {
   callSpCreateUser,
   checkUsernameExists,
@@ -125,4 +144,5 @@ module.exports = {
   checkUserIsAdmin,
   checkUserIsActive,
   callSpGetUserByUsername,
+  callSpChangeInfo,
 };

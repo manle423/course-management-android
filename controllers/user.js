@@ -35,7 +35,21 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const changeInfo = async (req, res, next) => {
+  const { full_name } = req.body;
+  try {
+    const user = await userService.changeInfo(req.params.id, full_name);
+    if (user.affectedRows > 0) {
+      res.status(200).json([{ message: 'Change info success' }]);
+    }
+  } catch (error) {
+    console.error('Error change info user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
+  changeInfo,
 };

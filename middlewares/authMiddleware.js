@@ -52,10 +52,20 @@ const checkUserOrAdmin = (req, res, next) => {
   }
 };
 
+const checkIsThatUser = (req, res, next) => {
+  const userId = req.params.id;
+  if (req.user.userId === userId) {
+    return next();
+  } else {
+    return res.status(403).json({ error: 'Forbidden: Access denied' });
+  }
+};
+
 module.exports = {
   verifyToken,
   extractToken,
   checkRole,
   checkUserOrAdmin,
+  checkIsThatUser,
   ROLES,
 };
