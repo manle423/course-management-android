@@ -75,9 +75,39 @@ const callSpSearchCourses = async (searchTerm) => {
   }
 };
 
+const callSpUpdateCourse = async (
+  id,
+  name,
+  description,
+  image,
+  video,
+  category_id,
+) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute('CALL sp_update_course(?,?,?,?,?,?)', [
+      id,
+      name,
+      description,
+      image,
+      video,
+      category_id,
+    ]);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+};
+
 module.exports = {
   callSpCreateCourse,
   callSpGetAllCourses,
   callSpGetCourse,
   callSpSearchCourses,
+  callSpUpdateCourse,
 };

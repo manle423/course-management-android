@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
 //#endregion
 
 //#region Routes
-route(app);
+route(app, express);
 //#endregion
 
 app.listen(port, () => {

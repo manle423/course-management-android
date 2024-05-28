@@ -5,7 +5,8 @@ const orderRouter = require('./order');
 const roleRouter = require('./role');
 const userRouter = require('./user');
 
-const route = (app) => {
+const route = (app, express) => {
+  app.use('/uploads', express.static('uploads'));
   app.use('/auth', authRouter);
   app.use('/categories', categoryRouter);
   app.use('/courses', courseRouter);

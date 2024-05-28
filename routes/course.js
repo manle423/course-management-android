@@ -24,4 +24,12 @@ router.get('/search', courseController.searchCourses);
 // [GET:] course by id
 router.get('/:id', courseController.getCourse);
 
+// [PUT:] update course by id
+router.put(
+  '/:id',
+  verifyToken,
+  checkRole([ROLES.MODERATOR]),
+  courseController.updateCourse,
+);
+
 module.exports = router;

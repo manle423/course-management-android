@@ -17,6 +17,7 @@ const createCourse = async (req, res, next) => {
       category_id,
     );
     res.json(rs);
+    console.log(rs);
   } catch (error) {
     console.error('Error creating course:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -62,7 +63,7 @@ const getCourse = async (req, res, next) => {
  * @access Public
  */
 const searchCourses = async (req, res, next) => {
-  console.log(req.query.searchTerm);
+  // console.log(req.query.searchTerm);
   try {
     // const searchTerm = req.params.body.search;
     const searchTerm = req.query.searchTerm;
@@ -71,7 +72,7 @@ const searchCourses = async (req, res, next) => {
       return res.status(400).json({ message: 'Please provide a search term' });
     }
 
-    console.log(`Searching courses for: ${searchTerm}`); // Log the search term
+    // console.log(`Searching courses for: ${searchTerm}`); // Log the search term
 
     const courses = await courseService.searchCourses(searchTerm);
     res.json(courses);
@@ -81,9 +82,35 @@ const searchCourses = async (req, res, next) => {
   }
 };
 
+/**
+ * @route PUT courses/:id
+ * @desc Update a single course (only moderator allowed)
+ * @access Private
+ */
+const updateCourse = async (req, res, next) => {
+  const { name, description, image, video, category_id } = req.body;
+  const courseId = req.params.id;
+
+  try {
+    const rs = await courseService.updateCourse(
+      courseId,
+      name,
+      description,
+      image,
+      video,
+      category_id,
+    );
+    res.json(rs);
+  } catch (error) {
+    console.error('Error updating course:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createCourse,
   getAllCourses,
   getCourse,
   searchCourses,
+  updateCourse,
 };

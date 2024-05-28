@@ -29,7 +29,12 @@ const createCourse = async (name, description, image, video, category_id) => {
       category_id,
     );
     const data = helper.emptyOrRows(rows);
-    return { status: 'success', data: data };
+    if (data.affectedRows > 0) {
+      return {
+        status: 'success',
+        data: data,
+      };
+    }
   } catch (error) {
     return { status: 'error', error: error.message };
   }
@@ -48,9 +53,39 @@ const searchCourses = async (searchTerm) => {
   return data;
 };
 
+const updateCourse = async (
+  id,
+  name,
+  description,
+  image,
+  video,
+  category_id,
+) => {
+  try {
+    const rows = await db.course.callSpUpdateCourse(
+      id,
+      name,
+      description,
+      image,
+      video,
+      category_id,
+    );
+    const data = helper.emptyOrRows(rows);
+    if (data.affectedRows > 0) {
+      return {
+        status: 'success',
+        data: data,
+      };
+    }
+  } catch (error) {
+    return { status: 'error', error: error.message };
+  }
+};
+
 module.exports = {
   createCourse,
   getAllCourses,
   getCourse,
   searchCourses,
+  updateCourse,
 };
