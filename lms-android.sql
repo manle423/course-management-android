@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 25, 2024 at 03:46 PM
+-- Generation Time: May 28, 2024 at 09:27 AM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -159,6 +159,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_user_by_username` (IN `p_
     SELECT * FROM users WHERE username = p_username;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_course` (IN `p_id` VARCHAR(36), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image` VARCHAR(255), IN `p_video` VARCHAR(255), IN `p_category_id` INT)   BEGIN
+    UPDATE courses 
+    SET 
+        course_name = p_name, 
+        description = p_description, 
+        image = p_image, 
+        video = p_video, 
+        category_id = p_category_id
+    WHERE course_id = p_id;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -232,20 +243,28 @@ INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `vide
 ('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Course2', 'Des1', '', '', 5, 0),
 ('29c8d915-3024-4299-af1d-3b1096692050', 'Course1', 'Des1', '', '', 2, 0),
 ('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Course1', 'Des1', '', '', 4, 0),
+('36fb6c53-591d-438d-b87d-460fcec40992', 'Course1', 'Des1', '', '', 2, 0),
+('48895d54-fc5a-44ab-8218-b76070870a8b', 'c', 'c', 'c', 'c', 8, 0),
 ('560f8d72-3cfa-4b11-84ba-11eb13740596', 'Course1', 'Des1', '', '', 2, 0),
 ('6075ba19-e197-4cbc-b157-1bff71ca8138', 'Course2', 'Des1', '', '', 2, 0),
 ('6a028d2c-e1ef-4664-94a9-12b2ccf34495', 'Course2', 'Des1', '', '', 2, 0),
+('79d588b1-7cf6-4fee-a093-d525e3fdd786', 'a', 'aa', 'aa', 'a', 7, 0),
 ('7dfa2d8f-2e5b-4164-9ec4-1731b58488a4', 'Course2', 'Des1', '', '', 2, 0),
 ('868afe24-5820-415e-9c9e-1dd9c5552304', 'Course2', 'Des1', '', '', 2, 0),
 ('8bc2edc8-efe2-4d20-a3fc-6702f25a2b7f', 'Course2', 'Des1', '', '', 2, 0),
 ('952b3eea-3793-43b0-b3d1-e8d04cf2f1ec', 'Course1', 'Des1', '', '', 1, 0),
+('9d309a2f-887c-455a-989d-c8521a6daf7f', 'Course1', 'Des1', '', '', 2, 0),
 ('a3cd84da-bb66-4bbe-a09f-58d2d47dafd4', 'Course2', 'Des1', '', '', 5, 0),
+('ba21b3a4-72cf-4c04-832e-a884f7156077', 'b', 'b', 'b', 'b', 10, 0),
+('bd72ab78-209f-4311-a258-1ad4f9c5f5ac', 'Course1', 'Des1', '', '', 2, 0),
 ('c6f13e0c-8f5a-4802-9113-f1c457752d19', 'Course2', 'Des1', '', '', 2, 0),
-('course1', 'Course 1', 'Description for Course 1', 'image1.jpg', 'video1.mp4', 1, 0),
-('course2', 'Course 2', 'Description for Course 2', 'image2.jpg', 'video2.mp4', 2, 0),
+('course1', 'course cos id la course1 da duoc update', 'course cos id la course1 da duoc update', 'course1.png', 'youtube.com', 1, 0),
+('course2', 'course co id la course2 updated', 'course co id la course2 updated', 'course2.png', '', 2, 0),
 ('course3', 'Course 3', 'Description for Course 3', 'image3.jpg', 'video3.mp4', 1, 0),
+('d741a44c-3e51-461a-9430-dcb73f172347', 'Course1', 'Des1', '', '', 2, 0),
 ('e1c25b47-e4a1-4a96-b68c-da552c65e83b', 'Course2', 'Des1', '', '', 4, 0),
 ('e603f757-b9e1-4153-ade0-7d7d88deb9fa', 'Course1', 'Des1', '', '', 2, 0),
+('f8eef06c-639d-47b4-8bea-87abbd507a92', 'newcourseandroid', 'course add in android', '1', '1', 10, 0),
 ('fb7b640b-1768-403e-abcd-4ed710e64b35', 'Course1', 'Des1', '', '', 7, 0);
 
 -- --------------------------------------------------------
