@@ -10,7 +10,7 @@
 First, clone the API repository by running the following command in your terminal:
 
 ```bash
-git clone https://github.com/manle423/course-management-android
+git clone https://github.com/manle423/course-management-android coursemanagement-api
 ```
 
 ### Navigate to Frontend Directory
