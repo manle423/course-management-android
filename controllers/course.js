@@ -25,6 +25,21 @@ const createCourse = async (req, res, next) => {
 };
 
 /**
+ * @route GET courses/total_course
+ * @desc total of courses
+ * @access Public
+ */
+const getTotalCourses = async (req, res, next) => {
+  try {
+    const rs = await courseService.getTotalCourses();
+    res.json(rs);
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+/**
  * @route GET courses/
  * @desc Show all courses
  * @access Public
@@ -101,6 +116,7 @@ const updateCourse = async (req, res, next) => {
       category_id,
     );
     res.json(rs);
+    console.log('Updated successfully');
   } catch (error) {
     console.error('Error updating course:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -113,4 +129,5 @@ module.exports = {
   getCourse,
   searchCourses,
   updateCourse,
+  getTotalCourses,
 };

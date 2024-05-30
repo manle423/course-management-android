@@ -27,6 +27,22 @@ const callSpCreateCourse = async (
   }
 };
 
+const callSpGetTotalCourses = async () => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute('CALL sp_get_total_courses()');
+    console.log(rows);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+};
+
 const callSpGetCourse = async (id) => {
   let conn;
   try {
@@ -110,4 +126,5 @@ module.exports = {
   callSpGetCourse,
   callSpSearchCourses,
   callSpUpdateCourse,
+  callSpGetTotalCourses,
 };

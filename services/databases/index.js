@@ -5,6 +5,7 @@ const course = require('./course');
 const user = require('./user');
 const blacklist = require('./blacklist');
 const role = require('./role');
+const order = require('./order');
 
 const query = async (sql, params) => {
   let conn;
@@ -28,4 +29,5 @@ module.exports = {
   user,
   blacklist,
   role,
+  order,
 };

@@ -40,9 +40,13 @@ const login = async (req, res, next) => {
  * @access Public
  */
 const logout = async (req, res, next) => {
-  const token = extractToken(req);
-  // console.log(token);
   try {
+    const token = extractToken(req);
+    if (!token) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: 'Token not provided' });
+    }
     const rs = await authService.logout(token);
     res.json(rs);
   } catch (error) {

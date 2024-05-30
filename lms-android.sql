@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 28, 2024 at 09:27 AM
+-- Generation Time: May 30, 2024 at 03:15 PM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -106,6 +106,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_course` (IN `p_id` VARCHA
     VALUES (p_id, p_name, p_description, p_image, p_video, p_category_id);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_order` (IN `p_id` VARCHAR(36), IN `p_user` VARCHAR(36), IN `p_course` VARCHAR(36))   BEGIN
+    INSERT INTO orders (order_id, user_id, course_id)
+    VALUES (p_id, p_user, p_course);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_role` (IN `p_name` VARCHAR(255))   BEGIN
     INSERT INTO roles (role_name)
     VALUES (p_name);
@@ -131,6 +136,19 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_users` (IN `offset` INT, IN `limitPerPage` INT)   BEGIN
     SELECT * FROM users LIMIT offset, limitPerPage;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_order_by_user_id` (IN `p_user_id` VARCHAR(36))   BEGIN
+    SELECT * FROM orders WHERE user_id = p_user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_total_courses` ()   BEGIN
+    DECLARE course_count INT;
+
+    SELECT COUNT(*) INTO course_count
+    FROM courses;
+
+    SELECT course_count;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_category_by_id` (IN `id` INT)   BEGIN
@@ -188,7 +206,8 @@ CREATE TABLE `blacklists` (
 --
 
 INSERT INTO `blacklists` (`id`, `token_value`) VALUES
-(1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWE4MTAwYy1mNzQ4LTRhNjEtOTAwYy0wOTAwYWY0MzczMmQiLCJ1c2VybmFtZSI6Im1vZGVyYXRvciIsInJvbGVfaWQiOjIsImlhdCI6MTcxNTc4Mjk5NywiZXhwIjoxNzE1ODY5Mzk3fQ.pvLR3roFYj0wUiiz4npfZOrb0zJXcZELmwDiX6FrywE');
+(1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWE4MTAwYy1mNzQ4LTRhNjEtOTAwYy0wOTAwYWY0MzczMmQiLCJ1c2VybmFtZSI6Im1vZGVyYXRvciIsInJvbGVfaWQiOjIsImlhdCI6MTcxNTc4Mjk5NywiZXhwIjoxNzE1ODY5Mzk3fQ.pvLR3roFYj0wUiiz4npfZOrb0zJXcZELmwDiX6FrywE'),
+(2, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWE4MTAwYy1mNzQ4LTRhNjEtOTAwYy0wOTAwYWY0MzczMmQiLCJ1c2VybmFtZSI6Im1vZGVyYXRvciIsInJvbGVfaWQiOjIsImlhdCI6MTcxNjk4ODMwNCwiZXhwIjoxNzE3MDc0NzA0fQ.uH-PcPrJbKlnbrQfVu-rmrd4HU8NYoRwDMdpecwPr2I');
 
 -- --------------------------------------------------------
 
@@ -237,14 +256,16 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `video`, `category_id`, `is_deleted`) VALUES
-('01ea24fa-b263-49a5-a0e6-02e351a43b8e', 'Course2', 'Des1', '', '', 3, 0),
+('01ea24fa-b263-49a5-a0e6-02e351a43b8e', 'Course2', 'Des1', 'g', 'g', 8, 0),
 ('080f2d5f-f55d-4b4e-9e01-a9906777ce19', 'Course2', 'Des1', '', '', 2, 0),
 ('1258005c-64d8-446e-aae3-dc60faae0f7c', 'Course2', 'Des1', '', '', 1, 0),
+('1673770a-1f69-4276-8244-b3203d9bc42f', 'test', 'in android', 'book1.jpg', 'youtube.com', 8, 0),
 ('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Course2', 'Des1', '', '', 5, 0),
 ('29c8d915-3024-4299-af1d-3b1096692050', 'Course1', 'Des1', '', '', 2, 0),
 ('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Course1', 'Des1', '', '', 4, 0),
 ('36fb6c53-591d-438d-b87d-460fcec40992', 'Course1', 'Des1', '', '', 2, 0),
-('48895d54-fc5a-44ab-8218-b76070870a8b', 'c', 'c', 'c', 'c', 8, 0),
+('480380f5-3c70-428e-b512-17bb754875ff', 'j', 'bhkb', 'j', 'jhjk', 9, 0),
+('48895d54-fc5a-44ab-8218-b76070870a8b', 'c', 'c', 'c', 'c', 10, 0),
 ('560f8d72-3cfa-4b11-84ba-11eb13740596', 'Course1', 'Des1', '', '', 2, 0),
 ('6075ba19-e197-4cbc-b157-1bff71ca8138', 'Course2', 'Des1', '', '', 2, 0),
 ('6a028d2c-e1ef-4664-94a9-12b2ccf34495', 'Course2', 'Des1', '', '', 2, 0),
@@ -278,6 +299,15 @@ CREATE TABLE `orders` (
   `user_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `course_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `course_id`) VALUES
+('160c750e-d536-4f91-9509-bdaa8a0dfdf6', '2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'ba21b3a4-72cf-4c04-832e-a884f7156077'),
+('9f9812ee-9230-49a0-b423-a93395a44bfc', '2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'ba21b3a4-72cf-4c04-832e-a884f7156077'),
+('fb40c2bf-16f3-4eab-bfa2-5bc65353a5ce', 'b1a8100c-f748-4a61-900c-0900af43732d', 'ba21b3a4-72cf-4c04-832e-a884f7156077');
 
 -- --------------------------------------------------------
 
@@ -320,6 +350,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `full_name`, `username`, `password`, `is_active`, `role_id`) VALUES
+('1', 'mod', 'mod', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
 ('2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'Nguyễn A', 'user2', '$2b$10$U79ykClg1h9LN6f8ZV6OvO8WoKOJZEp/bhtog99W0GabKS888bS5.', 1, 3),
 ('35a2f92a-92b2-4b14-bf03-823c60d728d2', 'Tester', 'tester', '$2b$10$UUFnKD0tz4GEnw9/I8iIqOgCX71qj/X6ubKLa06nowqdpcphwUIJy', 1, 3),
 ('7e1b0bb0-f33f-4e76-822b-fc210749e1df', 'Thì sao', 'user3', '$2b$10$1vXoYIrPqA5Qhb2Z4wlWku4aPCaVqUyRr4ZO//gWrWnLAWSkBY/.u', 1, 3),
@@ -387,13 +418,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `blacklists`
 --
 ALTER TABLE `blacklists`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `category_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `roles`

@@ -17,6 +17,12 @@ const getAllCourses = async (page = 1) => {
   return data;
 };
 
+const getTotalCourses = async () => {
+  const [rows] = await db.course.callSpGetTotalCourses();
+  const data = helper.emptyOrRows(rows);
+  return data;
+};
+
 const createCourse = async (name, description, image, video, category_id) => {
   const id = helper.generateUUID();
   try {
@@ -88,4 +94,5 @@ module.exports = {
   getCourse,
   searchCourses,
   updateCourse,
+  getTotalCourses,
 };

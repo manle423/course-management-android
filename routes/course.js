@@ -18,11 +18,10 @@ router.post(
   courseController.createCourse,
 );
 
+router.get('/total_courses', courseController.getTotalCourses);
+
 // [GET:] search course by name
 router.get('/search', courseController.searchCourses);
-
-// [GET:] course by id
-router.get('/:id', courseController.getCourse);
 
 // [PUT:] update course by id
 router.put(
@@ -31,5 +30,8 @@ router.put(
   checkRole([ROLES.MODERATOR]),
   courseController.updateCourse,
 );
+
+// [GET:] course by id
+router.get('/:id', courseController.getCourse);
 
 module.exports = router;
