@@ -11,10 +11,20 @@ router.post('/', verifyToken, orderController.createOrder);
 
 // [GET:] Get order of userId
 router.get(
-  '/:id',
+  '/attended',
   verifyToken,
-  checkIsThatUser,
   orderController.getOrderByUserId,
 );
+
+// [GET:] check if user attended course
+router.post(
+  '/check',
+  verifyToken,
+  orderController.checkIsUserAttended,
+);
+
+// [DELETE:] delete order by userId and courseId
+router.delete('/delete/:id', verifyToken, orderController.deleteOrder)
+
 
 module.exports = router;
