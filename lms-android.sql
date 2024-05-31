@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 30, 2024 at 03:15 PM
+-- Generation Time: May 31, 2024 at 10:11 AM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -68,6 +68,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_is_admin` (IN `p_user_id` 
     SELECT is_user_admin AS is_user_admin;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_is_user_attended` (IN `p_user_id` VARCHAR(36), IN `p_course_id` VARCHAR(36))   BEGIN
+    DECLARE order_exists BOOLEAN;
+
+    SELECT EXISTS(
+        SELECT 1
+        FROM orders
+        WHERE user_id = p_user_id AND course_id = p_course_id
+    ) INTO order_exists;
+
+    SELECT order_exists AS attended;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_check_token_in_blacklist` (IN `p_token_value` TEXT)   BEGIN
     DECLARE v_count INT;
 
@@ -121,12 +133,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_user` (IN `p_id` VARCHAR(
     VALUES (p_id, p_username, p_password);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_order` (IN `p_user` VARCHAR(36), IN `p_course` VARCHAR(36))   BEGIN
+    delete from orders where user_id = p_user and course_id = p_course;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_categories` (IN `offset` INT, IN `limitPerPage` INT)   BEGIN
-    SELECT * FROM categories LIMIT offset, limitPerPage;
+    SELECT * FROM categories;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_courses` (IN `offset` INT, IN `limitPerPage` INT)   BEGIN
-    SELECT * FROM courses LIMIT offset, limitPerPage;
+    SELECT * FROM courses;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_roles` (IN `offset` INT, IN `limitPerPage` INT)   BEGIN
@@ -139,7 +155,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_all_users` (IN `offset` INT,
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_order_by_user_id` (IN `p_user_id` VARCHAR(36))   BEGIN
-    SELECT * FROM orders WHERE user_id = p_user_id;
+    SELECT  
+        c.*
+    FROM 
+        orders o
+    JOIN 
+        courses c
+    ON 
+        o.course_id = c.course_id
+    WHERE 
+        o.user_id = p_user_id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_total_courses` ()   BEGIN
@@ -198,7 +223,7 @@ DELIMITER ;
 
 CREATE TABLE `blacklists` (
   `id` int NOT NULL,
-  `token_value` text COLLATE utf8mb4_general_ci NOT NULL
+  `token_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -225,15 +250,15 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`category_id`, `category_name`) VALUES
-(3, 'Category 3'),
-(1, 'Category A'),
-(2, 'Category B'),
-(4, 'Category C'),
-(5, 'category D'),
-(7, 'category E'),
 (8, 'category F'),
 (9, 'category G'),
-(10, 'category H');
+(4, 'Công nghệ'),
+(7, 'Kỹ năng sống'),
+(3, 'Lập trình'),
+(10, 'LTĐH'),
+(5, 'Nghệ thuật\r\n'),
+(1, 'Thiết kế'),
+(2, 'Đời sống');
 
 -- --------------------------------------------------------
 
@@ -256,37 +281,18 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `video`, `category_id`, `is_deleted`) VALUES
-('01ea24fa-b263-49a5-a0e6-02e351a43b8e', 'Course2', 'Des1', 'g', 'g', 8, 0),
-('080f2d5f-f55d-4b4e-9e01-a9906777ce19', 'Course2', 'Des1', '', '', 2, 0),
-('1258005c-64d8-446e-aae3-dc60faae0f7c', 'Course2', 'Des1', '', '', 1, 0),
-('1673770a-1f69-4276-8244-b3203d9bc42f', 'test', 'in android', 'book1.jpg', 'youtube.com', 8, 0),
-('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Course2', 'Des1', '', '', 5, 0),
-('29c8d915-3024-4299-af1d-3b1096692050', 'Course1', 'Des1', '', '', 2, 0),
-('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Course1', 'Des1', '', '', 4, 0),
-('36fb6c53-591d-438d-b87d-460fcec40992', 'Course1', 'Des1', '', '', 2, 0),
-('480380f5-3c70-428e-b512-17bb754875ff', 'j', 'bhkb', 'j', 'jhjk', 9, 0),
-('48895d54-fc5a-44ab-8218-b76070870a8b', 'c', 'c', 'c', 'c', 10, 0),
-('560f8d72-3cfa-4b11-84ba-11eb13740596', 'Course1', 'Des1', '', '', 2, 0),
-('6075ba19-e197-4cbc-b157-1bff71ca8138', 'Course2', 'Des1', '', '', 2, 0),
-('6a028d2c-e1ef-4664-94a9-12b2ccf34495', 'Course2', 'Des1', '', '', 2, 0),
-('79d588b1-7cf6-4fee-a093-d525e3fdd786', 'a', 'aa', 'aa', 'a', 7, 0),
-('7dfa2d8f-2e5b-4164-9ec4-1731b58488a4', 'Course2', 'Des1', '', '', 2, 0),
-('868afe24-5820-415e-9c9e-1dd9c5552304', 'Course2', 'Des1', '', '', 2, 0),
-('8bc2edc8-efe2-4d20-a3fc-6702f25a2b7f', 'Course2', 'Des1', '', '', 2, 0),
-('952b3eea-3793-43b0-b3d1-e8d04cf2f1ec', 'Course1', 'Des1', '', '', 1, 0),
-('9d309a2f-887c-455a-989d-c8521a6daf7f', 'Course1', 'Des1', '', '', 2, 0),
-('a3cd84da-bb66-4bbe-a09f-58d2d47dafd4', 'Course2', 'Des1', '', '', 5, 0),
-('ba21b3a4-72cf-4c04-832e-a884f7156077', 'b', 'b', 'b', 'b', 10, 0),
-('bd72ab78-209f-4311-a258-1ad4f9c5f5ac', 'Course1', 'Des1', '', '', 2, 0),
-('c6f13e0c-8f5a-4802-9113-f1c457752d19', 'Course2', 'Des1', '', '', 2, 0),
-('course1', 'course cos id la course1 da duoc update', 'course cos id la course1 da duoc update', 'course1.png', 'youtube.com', 1, 0),
-('course2', 'course co id la course2 updated', 'course co id la course2 updated', 'course2.png', '', 2, 0),
-('course3', 'Course 3', 'Description for Course 3', 'image3.jpg', 'video3.mp4', 1, 0),
-('d741a44c-3e51-461a-9430-dcb73f172347', 'Course1', 'Des1', '', '', 2, 0),
-('e1c25b47-e4a1-4a96-b68c-da552c65e83b', 'Course2', 'Des1', '', '', 4, 0),
-('e603f757-b9e1-4153-ade0-7d7d88deb9fa', 'Course1', 'Des1', '', '', 2, 0),
-('f8eef06c-639d-47b4-8bea-87abbd507a92', 'newcourseandroid', 'course add in android', '1', '1', 10, 0),
-('fb7b640b-1768-403e-abcd-4ed710e64b35', 'Course1', 'Des1', '', '', 7, 0);
+('01ea24fa-b263-49a5-a0e6-02e351a43b8e', 'HTML & CSS Full Course 🌎 (2023)', 'Bro Code đã trở lại với một khóa học vỏn vẹn 4 tiếng, bao hàm toàn bộ các kiến thức nền tảng về HTML và CSS.', 'html_css.jpg', 'https://youtu.be/HGTJBPNC-Gw?si=FSSMwoRUCjdkcshN', 3, 0),
+('080f2d5f-f55d-4b4e-9e01-a9906777ce19', 'Khóa học Digital Marketing nền tảng - Trần Minh Nhân Chính', 'Một series video của Trần Minh Nhân Chính, bao bọc các kiến thức nền tảng nhất về Digital Marketing, đồng thời mở rộng sang cả Landing Page, Website, Facebook Ads,...', 'digital_marketing.jpg', 'https://www.youtube.com/watch?v=93zSv9UjpAc&list=PLrwsw2It1I1kHlbF0yHcHIzI2ZY1eAtkk', 4, 0),
+('1258005c-64d8-446e-aae3-dc60faae07cf', 'Cải thiện kỹ năng giao tiếp - Conor Neil', 'Tổng hợp những cách thức, lời khuyên về giao tiếp từ giáo sư Conor Neil thuộc IESE Business School.', 'communication_skills.jpg', 'https://www.youtube.com/playlist?list=PL8EEC66CC5F02545C', 7, 0),
+('1258005c-64d8-446e-aae3-dc60faae0f7c', 'Java Programming for Beginners – Full Course', 'Khóa học này sẽ cung cấp cho bạn những kiến thức nền tảng về ngôn ngữ Java chỉ trong 4 tiếng.', 'java.jpg', 'https://www.youtube.com/watch?v=A74TOX803D0', 3, 0),
+('1673770a-1f69-4276-8244-b3203d9bc42f', 'Photoshop for Beginners', 'Sau 3 tiếng đồng hồ với khóa học này, bạn sẽ có thể tự tin làm chủ ứng dụng Photoshop, biến nó thành công cụ đắc lực trong quá trình thiết kế hình ảnh.', 'photoshop_beginner.jpg', 'https://www.youtube.com/watch?v=IyR_uYsRdPs&t=1s', 1, 0),
+('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Java Full Course ☕', 'Toàn bộ những thông tin cơ bản, nền tảng về Java, gói gọn trong 1 khóa học dài 12 tiếng đồng hồ từ Bro Code.', 'java.jpg', 'https://www.youtube.com/watch?v=xk4_1vDrzzo&t=2s', 3, 0),
+('29c8d915-3024-4299-af1d-3b1096692050', 'Python Full Course 🐍', 'Khóa học này cung cấp những kiến thức nền tảng về Python, đồng thời cho người học áp dụng những kiến thức này vào các dự án đơn giản.', 'python.png', 'https://www.youtube.com/watch?v=XKHEtdqhLK8&t=16867s', 3, 0),
+('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Chinh Phục Adobe Illustrator - Thùy Uyên', 'Sau khi hoàn thành khóa học này, bạn có thể tự tin làm chủ ứng dụng Adobe Illustrator.', 'illustrator.jpg', 'https://www.youtube.com/watch?v=aQMopS2idcc&list=PL6G5alza0BdSq48VSa1T3ApIkf5Wflb7Q&index=1', 1, 0),
+('36fb6c53-591d-438d-b87d-460fcec40992', 'Harvard CS50’s Artificial Intelligence with Python', 'Những kiến thức cơ bản nhất về trí tuệ nhân tạo được cung cấp từ giảng viên thuộc đại học Harvard.', 'ai_in_business.jpg', 'https://youtu.be/5NgNicANyqM?si=Owv3vc5YoaHkwZJ1', 4, 0),
+('480380f5-3c70-428e-b512-17bb754875ff', 'Học Guitar cơ bản trong 30 ngày', 'Nếu làm theo khóa học này, bạn sẽ thực sự có thể chơi Guitar chỉ sau 30 ngày. Không tin ư? Bạn cứ vào học là sẽ kiểm chứng được ngay!', 'guitar_beginner.jpg', 'https://www.youtube.com/playlist?list=PLFcgHQh5q7E6hoY5UJMkh1vaY25mPha3W', 5, 0),
+('886b2280-1f24-11ef-b25d-0250835b3290', 'C++ Full Course ⚡️', 'Khóa học cung cấp những kiến thức cơ bản về ngôn ngữ C++, đồng thơi có các bài tập cho người học vận dụng kiến thức đã học.', 'book3.jpg', 'https://www.youtube.com/watch?v=-TkoO8Z07hI', 3, 0),
+('fd871af9-cb9c-444d-882c-0c9595ac0f0a', 'Photoshop for beginner', 'bạn muốn đẹp hơn? sao không thử photoshop', 'photoshop_beginner.jpg', 'https://youtu.be/HdxtcBILnow?si=qAVBgVXSEaTtgMYB', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -305,9 +311,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `course_id`) VALUES
-('160c750e-d536-4f91-9509-bdaa8a0dfdf6', '2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'ba21b3a4-72cf-4c04-832e-a884f7156077'),
-('9f9812ee-9230-49a0-b423-a93395a44bfc', '2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'ba21b3a4-72cf-4c04-832e-a884f7156077'),
-('fb40c2bf-16f3-4eab-bfa2-5bc65353a5ce', 'b1a8100c-f748-4a61-900c-0900af43732d', 'ba21b3a4-72cf-4c04-832e-a884f7156077');
+('0bfc4a08-cf51-46b5-8fc7-1185042091b7', '8a164fa7-95f7-4554-9359-93a199e4f403', '080f2d5f-f55d-4b4e-9e01-a9906777ce19'),
+('a53501e8-ca8d-48b8-8c92-451eb0bcb7e2', '8a164fa7-95f7-4554-9359-93a199e4f403', '2a7b6451-c01d-4c07-a58e-b9268dfb9a09'),
+('ea2a4295-7661-4aa9-b6ef-1f109f489741', '8a164fa7-95f7-4554-9359-93a199e4f403', '36fb6c53-591d-438d-b87d-460fcec40992');
 
 -- --------------------------------------------------------
 
@@ -338,7 +344,7 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 
 CREATE TABLE `users` (
   `user_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `is_active` tinyint(1) DEFAULT '1',
@@ -361,6 +367,7 @@ INSERT INTO `users` (`user_id`, `full_name`, `username`, `password`, `is_active`
 ('9561ac5a-9248-4bee-aad6-2e07e6e678af', '', 'tester1', '$2b$10$hB3yU6WOrV7zgpHjAbXvq.yLgU2jF5aQUF5xTYUUM9rl0BlHpC7MO', 1, 3),
 ('b1a8100c-f748-4a61-900c-0900af43732d', 'Nguyễn D', 'moderator', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
 ('dafddefa-86f1-484a-a272-fcdcfc08bb4f', 'Lê E', 'user', '$2b$10$taGbcEN4vcOpkZ/CdRIonusgY2tfK6l6TdqavXXFE.Et1dzr7O356', 1, 3),
+('f54c49be-bbfd-4811-8831-f1bdd895dde7', '', 'dinhan', '$2b$10$sOCXGm7MnF41B2c4lwueGu2gK6NQwvX0FAcx.9/LZoGE7v1VGbwYy', 1, 3),
 ('f6db8955-a680-438d-8c63-6dcf7222e2e6', 'Nguyễn F', 'test', '$2b$10$6mGpKO4sli1qL/ZM40Ii8ejB8EN/YzUKaPm7DBeW81dGLHKcgS5yi', 1, 3);
 
 --
