@@ -31,6 +31,9 @@ router.put(
   courseController.updateCourse,
 );
 
+// [GET:] Get list of courses sorted by popularity
+router.get('/popular', courseController.getPopularCourses);
+
 // [GET:] course by id
 router.get('/:id', courseController.getCourse);
 

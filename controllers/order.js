@@ -75,9 +75,39 @@ const deleteOrder = async (req, res, next) => {
   }
 };
 
+/**
+ * @route GET orders/sortasc
+ * @desc sort the popular courses asc
+ * @access Public
+ */
+const sortByPopularityAsc = async (req, res, next) => {
+  try {
+    const rs = await orderService.sortByPopularityAsc();
+    res.json(rs);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @route GET orders/sortdesc
+ * @desc sort the popular courses desc
+ * @access Public
+ */
+const sortByPopularityDesc = async (req, res, next) => {
+  try {
+    const rs = await orderService.sortByPopularityDesc();
+    res.json(rs);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createOrder,
   getOrderByUserId,
   checkIsUserAttended,
   deleteOrder,
+  sortByPopularityAsc,
+  sortByPopularityDesc,
 };

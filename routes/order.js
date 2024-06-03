@@ -26,5 +26,10 @@ router.post(
 // [DELETE:] delete order by userId and courseId
 router.delete('/delete/:id', verifyToken, orderController.deleteOrder)
 
+// [GET] Sort courses by popularity in descending order
+router.get('/sortdesc', orderController.sortByPopularityDesc)
+
+// [GET] Sort courses by popularity in ascending order
+router.get('/sortasc', orderController.sortByPopularityAsc)
 
 module.exports = router;

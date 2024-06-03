@@ -88,6 +88,13 @@ const updateCourse = async (
   }
 };
 
+const getPopularCourses = async (sort) => {
+  console.log(sort);
+  const [rows] = await db.course.callSpGetPopularCourses(sort);
+  const data = helper.emptyOrRows(rows);
+  return data;
+}
+
 module.exports = {
   createCourse,
   getAllCourses,
@@ -95,4 +102,5 @@ module.exports = {
   searchCourses,
   updateCourse,
   getTotalCourses,
+  getPopularCourses,
 };

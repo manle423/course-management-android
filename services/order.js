@@ -59,9 +59,31 @@ const deleteOrder = async (user_id, course_id) => {
   }
 };
 
+const sortByPopularityAsc = async () => {
+  try {
+    const rows = await db.order.callSpSortByPopularityAsc();
+    const data = helper.emptyOrRows(rows);
+    return data;
+  } catch (error) {
+    return { status: "error", error: error.message };
+  }
+}
+
+const sortByPopularityDesc = async () => {
+  try {
+    const rows = await db.order.callSpSortByPopularityDesc();
+    const data = helper.emptyOrRows(rows);
+    return data;
+  } catch (error) {
+    return { status: "error", error: error.message };
+  }
+}
+
 module.exports = {
   createOrder,
   getOrderByUserId,
   checkIsUserAttended,
   deleteOrder,
+  sortByPopularityAsc,
+  sortByPopularityDesc,
 };

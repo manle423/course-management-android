@@ -123,6 +123,24 @@ const updateCourse = async (req, res, next) => {
   }
 };
 
+/**
+ * @route GET /courses/popular?sort=
+ * @desc Get list of courses sorted by popularity
+ * @query {string} [sort] - 'asc' or 'desc'
+ * @access Public
+ */
+const getPopularCourses = async (req, res, next) => {
+  try {
+    const sort = req.query.sort;
+    console.log(sort);
+    const rs = await courseService.getPopularCourses(sort);
+    res.json(rs);
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 module.exports = {
   createCourse,
   getAllCourses,
@@ -130,4 +148,5 @@ module.exports = {
   searchCourses,
   updateCourse,
   getTotalCourses,
+  getPopularCourses,
 };

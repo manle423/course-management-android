@@ -73,9 +73,41 @@ const callSpDeleteOrder = async (userId, courseId) => {
   }
 };
 
+const callSpSortByPopularityDesc = async () => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute(`CALL sp_sort_by_popularity_desc`);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      await conn.end();
+    }
+  }
+}
+
+const callSpSortByPopularityAsc = async () => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute(`CALL sp_sort_by_popularity_asc`);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      await conn.end();
+    }
+  }
+}
+
 module.exports = {
   callSpCreateOrder,
   callSpGetOrderByUserId,
   checkIsUserAttended,
   callSpDeleteOrder,
+  callSpSortByPopularityDesc,
+  callSpSortByPopularityAsc,
 };
