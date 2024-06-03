@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2024 at 03:53 PM
+-- Generation Time: Jun 03, 2024 at 05:58 PM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -202,6 +202,62 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_user_by_username` (IN `p_
     SELECT * FROM users WHERE username = p_username;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_sort_by_popularity` (IN `p_order` VARCHAR(4))   BEGIN
+    IF p_order = 'asc' THEN
+        SELECT
+            c.*,
+            COUNT(o.order_id) AS order_count
+        FROM
+            courses c
+        LEFT JOIN
+            orders o ON c.course_id = o.course_id
+        GROUP BY
+            c.course_id
+        ORDER BY
+            order_count ASC;
+    ELSE
+        SELECT
+            c.*,
+            COUNT(o.order_id) AS order_count
+        FROM
+            courses c
+        LEFT JOIN
+            orders o ON c.course_id = o.course_id
+        GROUP BY
+            c.course_id
+        ORDER BY
+            order_count DESC;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_sort_by_popularity_asc` ()   BEGIN
+    SELECT
+        c.*,
+        COUNT(o.order_id) AS order_count
+    FROM
+        courses c
+    LEFT JOIN
+        orders o ON c.course_id = o.course_id
+    GROUP BY
+        c.course_id
+    ORDER BY
+        order_count ASC;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_sort_by_popularity_desc` ()   BEGIN
+    SELECT
+        c.*,
+        COUNT(o.order_id) AS order_count
+    FROM
+        courses c
+    LEFT JOIN
+        orders o ON c.course_id = o.course_id
+    GROUP BY
+        c.course_id
+    ORDER BY
+        order_count DESC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_course` (IN `p_id` VARCHAR(36), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image` VARCHAR(255), IN `p_video` VARCHAR(255), IN `p_category_id` INT)   BEGIN
     UPDATE courses 
     SET 
@@ -313,6 +369,7 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`order_id`, `user_id`, `course_id`) VALUES
 ('0bfc4a08-cf51-46b5-8fc7-1185042091b7', '8a164fa7-95f7-4554-9359-93a199e4f403', '080f2d5f-f55d-4b4e-9e01-a9906777ce19'),
+('37ba5b9d-80a6-4bcf-8c54-3c992311b684', '8a164fa7-95f7-4554-9359-93a199e4f403', '01ea24fa-b263-49a5-a0e6-02e351a43b8e'),
 ('3a9a6fe3-2921-4ab9-b6d7-a7f445b7932e', '1693101e-9710-404c-9334-25a496daeaea', '01ea24fa-b263-49a5-a0e6-02e351a43b8e'),
 ('a53501e8-ca8d-48b8-8c92-451eb0bcb7e2', '8a164fa7-95f7-4554-9359-93a199e4f403', '2a7b6451-c01d-4c07-a58e-b9268dfb9a09'),
 ('ea2a4295-7661-4aa9-b6ef-1f109f489741', '8a164fa7-95f7-4554-9359-93a199e4f403', '36fb6c53-591d-438d-b87d-460fcec40992'),
