@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 31, 2024 at 10:11 AM
+-- Generation Time: Jun 03, 2024 at 03:53 PM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -128,9 +128,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_role` (IN `p_name` VARCHA
     VALUES (p_name);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_user` (IN `p_id` VARCHAR(36), IN `p_username` VARCHAR(255), IN `p_password` VARCHAR(255))   BEGIN
-    INSERT INTO users (user_id, username, password)
-    VALUES (p_id, p_username, p_password);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_user` (IN `p_id` VARCHAR(36), IN `p_email` VARCHAR(255), IN `p_username` VARCHAR(255), IN `p_password` VARCHAR(255))   BEGIN
+    INSERT INTO users (user_id, email, username, password)
+    VALUES (p_id, p_email, p_username, p_password);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_delete_order` (IN `p_user` VARCHAR(36), IN `p_course` VARCHAR(36))   BEGIN
@@ -291,6 +291,7 @@ INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `vide
 ('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Chinh Phục Adobe Illustrator - Thùy Uyên', 'Sau khi hoàn thành khóa học này, bạn có thể tự tin làm chủ ứng dụng Adobe Illustrator.', 'illustrator.jpg', 'https://www.youtube.com/watch?v=aQMopS2idcc&list=PL6G5alza0BdSq48VSa1T3ApIkf5Wflb7Q&index=1', 1, 0),
 ('36fb6c53-591d-438d-b87d-460fcec40992', 'Harvard CS50’s Artificial Intelligence with Python', 'Những kiến thức cơ bản nhất về trí tuệ nhân tạo được cung cấp từ giảng viên thuộc đại học Harvard.', 'ai_in_business.jpg', 'https://youtu.be/5NgNicANyqM?si=Owv3vc5YoaHkwZJ1', 4, 0),
 ('480380f5-3c70-428e-b512-17bb754875ff', 'Học Guitar cơ bản trong 30 ngày', 'Nếu làm theo khóa học này, bạn sẽ thực sự có thể chơi Guitar chỉ sau 30 ngày. Không tin ư? Bạn cứ vào học là sẽ kiểm chứng được ngay!', 'guitar_beginner.jpg', 'https://www.youtube.com/playlist?list=PLFcgHQh5q7E6hoY5UJMkh1vaY25mPha3W', 5, 0),
+('48a66180-bf29-4a99-86b6-de2ab7e70055', 'Hello', 'Hello', 'book1.jpg', 'youtube.com', 7, 0),
 ('886b2280-1f24-11ef-b25d-0250835b3290', 'C++ Full Course ⚡️', 'Khóa học cung cấp những kiến thức cơ bản về ngôn ngữ C++, đồng thơi có các bài tập cho người học vận dụng kiến thức đã học.', 'book3.jpg', 'https://www.youtube.com/watch?v=-TkoO8Z07hI', 3, 0),
 ('fd871af9-cb9c-444d-882c-0c9595ac0f0a', 'Photoshop for beginner', 'bạn muốn đẹp hơn? sao không thử photoshop', 'photoshop_beginner.jpg', 'https://youtu.be/HdxtcBILnow?si=qAVBgVXSEaTtgMYB', 3, 0);
 
@@ -312,8 +313,10 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`order_id`, `user_id`, `course_id`) VALUES
 ('0bfc4a08-cf51-46b5-8fc7-1185042091b7', '8a164fa7-95f7-4554-9359-93a199e4f403', '080f2d5f-f55d-4b4e-9e01-a9906777ce19'),
+('3a9a6fe3-2921-4ab9-b6d7-a7f445b7932e', '1693101e-9710-404c-9334-25a496daeaea', '01ea24fa-b263-49a5-a0e6-02e351a43b8e'),
 ('a53501e8-ca8d-48b8-8c92-451eb0bcb7e2', '8a164fa7-95f7-4554-9359-93a199e4f403', '2a7b6451-c01d-4c07-a58e-b9268dfb9a09'),
-('ea2a4295-7661-4aa9-b6ef-1f109f489741', '8a164fa7-95f7-4554-9359-93a199e4f403', '36fb6c53-591d-438d-b87d-460fcec40992');
+('ea2a4295-7661-4aa9-b6ef-1f109f489741', '8a164fa7-95f7-4554-9359-93a199e4f403', '36fb6c53-591d-438d-b87d-460fcec40992'),
+('fe8a8081-624d-4333-b826-f650f9554c8d', '1693101e-9710-404c-9334-25a496daeaea', 'fd871af9-cb9c-444d-882c-0c9595ac0f0a');
 
 -- --------------------------------------------------------
 
@@ -344,7 +347,8 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 
 CREATE TABLE `users` (
   `user_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `is_active` tinyint(1) DEFAULT '1',
@@ -355,20 +359,25 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `full_name`, `username`, `password`, `is_active`, `role_id`) VALUES
-('1', 'mod', 'mod', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
-('2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', 'Nguyễn A', 'user2', '$2b$10$U79ykClg1h9LN6f8ZV6OvO8WoKOJZEp/bhtog99W0GabKS888bS5.', 1, 3),
-('35a2f92a-92b2-4b14-bf03-823c60d728d2', 'Tester', 'tester', '$2b$10$UUFnKD0tz4GEnw9/I8iIqOgCX71qj/X6ubKLa06nowqdpcphwUIJy', 1, 3),
-('7e1b0bb0-f33f-4e76-822b-fc210749e1df', 'Thì sao', 'user3', '$2b$10$1vXoYIrPqA5Qhb2Z4wlWku4aPCaVqUyRr4ZO//gWrWnLAWSkBY/.u', 1, 3),
-('84227c70-014f-4fff-98d6-2448c8a0d4fd', 'Lê Nguyễn Trung Mẫn', 'man', '$2b$10$.bqDZPzV6ilQzlDtG0KMcO2mRgM9IuL8CLT6mXOhkYI1bR7WQy14e', 1, 1),
-('87245ca0-b2c4-4793-b4ab-4907e4688807', '', 'hule', '$2b$10$q93GG1TUqCjLtM0Sr0tToekEJm3RrBS9iPVBUWDbWIDwGUWygIJbC', 1, 3),
-('8a164fa7-95f7-4554-9359-93a199e4f403', 'Trần B', 'user1', '$2b$10$g2Sb8Nd3W.ZRLgKRWzJTZ.SHFJv3DG32wjq1UzJrhSnevSMeWsFGK', 1, 3),
-('8c70dca9-edf4-4cb3-92d1-2cbbacc19c38', 'Updated Name', 'admin', '$2b$10$pklxTyC58whxFyfVxoh6ke.AEXqZydaN8qrxw/jEA0lfamd6EeCMm', 1, 1),
-('9561ac5a-9248-4bee-aad6-2e07e6e678af', '', 'tester1', '$2b$10$hB3yU6WOrV7zgpHjAbXvq.yLgU2jF5aQUF5xTYUUM9rl0BlHpC7MO', 1, 3),
-('b1a8100c-f748-4a61-900c-0900af43732d', 'Nguyễn D', 'moderator', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
-('dafddefa-86f1-484a-a272-fcdcfc08bb4f', 'Lê E', 'user', '$2b$10$taGbcEN4vcOpkZ/CdRIonusgY2tfK6l6TdqavXXFE.Et1dzr7O356', 1, 3),
-('f54c49be-bbfd-4811-8831-f1bdd895dde7', '', 'dinhan', '$2b$10$sOCXGm7MnF41B2c4lwueGu2gK6NQwvX0FAcx.9/LZoGE7v1VGbwYy', 1, 3),
-('f6db8955-a680-438d-8c63-6dcf7222e2e6', 'Nguyễn F', 'test', '$2b$10$6mGpKO4sli1qL/ZM40Ii8ejB8EN/YzUKaPm7DBeW81dGLHKcgS5yi', 1, 3);
+INSERT INTO `users` (`user_id`, `email`, `full_name`, `username`, `password`, `is_active`, `role_id`) VALUES
+('073a0add-dc55-4f40-bbc3-d324f946b93c', NULL, NULL, 'emm', '$2b$10$nkWLEYSHVy69zrdWI4/PV.KqvnuC0wmbRbZjvGRrlE/vHopQm1JYS', 1, 3),
+('1', NULL, 'mod', 'mod', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
+('1693101e-9710-404c-9334-25a496daeaea', NULL, '', 'newuser', '$2b$10$4f9P55/g26UN3ZKxV6E0vOwuUffMZ4lYzqIqE9wPFXwnCKrQ8USqu', 1, 3),
+('2f9f0cb2-76c1-43bf-9fbc-e5af4c5381f8', NULL, 'Nguyễn A', 'user2', '$2b$10$U79ykClg1h9LN6f8ZV6OvO8WoKOJZEp/bhtog99W0GabKS888bS5.', 1, 3),
+('35a2f92a-92b2-4b14-bf03-823c60d728d2', NULL, 'Tester', 'tester', '$2b$10$UUFnKD0tz4GEnw9/I8iIqOgCX71qj/X6ubKLa06nowqdpcphwUIJy', 1, 3),
+('51e3af0d-5f1c-4148-a07c-f62f7a331187', NULL, NULL, 'new', '$2b$10$HWlmn3Ad732HUKNOnm/BOO.Fj1dBK44ObqfYi4018lo47/Xezzc9m', 1, 3),
+('7e1b0bb0-f33f-4e76-822b-fc210749e1df', NULL, 'Thì sao', 'user3', '$2b$10$1vXoYIrPqA5Qhb2Z4wlWku4aPCaVqUyRr4ZO//gWrWnLAWSkBY/.u', 1, 3),
+('84227c70-014f-4fff-98d6-2448c8a0d4fd', NULL, 'Lê Nguyễn Trung Mẫn', 'man', '$2b$10$.bqDZPzV6ilQzlDtG0KMcO2mRgM9IuL8CLT6mXOhkYI1bR7WQy14e', 1, 1),
+('87245ca0-b2c4-4793-b4ab-4907e4688807', NULL, '', 'hule', '$2b$10$q93GG1TUqCjLtM0Sr0tToekEJm3RrBS9iPVBUWDbWIDwGUWygIJbC', 1, 3),
+('8a164fa7-95f7-4554-9359-93a199e4f403', NULL, 'Trần B', 'user1', '$2b$10$g2Sb8Nd3W.ZRLgKRWzJTZ.SHFJv3DG32wjq1UzJrhSnevSMeWsFGK', 1, 3),
+('8c70dca9-edf4-4cb3-92d1-2cbbacc19c38', NULL, 'Updated Name', 'admin', '$2b$10$pklxTyC58whxFyfVxoh6ke.AEXqZydaN8qrxw/jEA0lfamd6EeCMm', 1, 1),
+('9561ac5a-9248-4bee-aad6-2e07e6e678af', NULL, '', 'tester1', '$2b$10$hB3yU6WOrV7zgpHjAbXvq.yLgU2jF5aQUF5xTYUUM9rl0BlHpC7MO', 1, 3),
+('b1a8100c-f748-4a61-900c-0900af43732d', NULL, 'Nguyễn D', 'moderator', '$2b$10$scHNmbvf8kpW3NljmwOYs.L.4zSI9BwhY0gmenaR/dOjPB.bnRH5G', 1, 2),
+('b6cd722b-ea1b-4d21-afa8-f7917b8fce54', NULL, NULL, 'user have email 1', '$2b$10$mTgMJlMdVAyLCrDqQk89eeX1uDJQ8HanandmTc4fIewBIRXYZjFSe', 1, 3),
+('ba9e50c3-723c-495e-b1f8-a9693af20a6b', NULL, NULL, 'emailgam', '$2b$10$IJNjZBACOiUyuff5LZonyu3kIugCeimzf/S0S7sxNuy9me8HJyzfe', 1, 3),
+('dafddefa-86f1-484a-a272-fcdcfc08bb4f', NULL, 'Lê E', 'user', '$2b$10$taGbcEN4vcOpkZ/CdRIonusgY2tfK6l6TdqavXXFE.Et1dzr7O356', 1, 3),
+('f54c49be-bbfd-4811-8831-f1bdd895dde7', NULL, '', 'dinhan', '$2b$10$sOCXGm7MnF41B2c4lwueGu2gK6NQwvX0FAcx.9/LZoGE7v1VGbwYy', 1, 3),
+('f6db8955-a680-438d-8c63-6dcf7222e2e6', NULL, 'Nguyễn F', 'test', '$2b$10$6mGpKO4sli1qL/ZM40Ii8ejB8EN/YzUKaPm7DBeW81dGLHKcgS5yi', 1, 3);
 
 --
 -- Indexes for dumped tables
