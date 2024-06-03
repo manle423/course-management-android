@@ -2,12 +2,13 @@ const mysql = require('mysql2/promise');
 const config = require('../../config');
 const db = require('./index');
 
-const callSpCreateUser = async (id, username, password) => {
+const callSpCreateUser = async (id, email, username, password) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute(`CALL sp_create_user(?, ?, ?)`, [
+    const [rows] = await conn.execute(`CALL sp_create_user(?, ?, ?, ?)`, [
       id,
+      email,
       username,
       password,
     ]);

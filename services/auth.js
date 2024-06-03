@@ -55,7 +55,7 @@ const register = async (username, email, password, retypePassword) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const rows = await db.user.callSpCreateUser(id, username, email, hashedPassword);
+    const rows = await db.user.callSpCreateUser(id, email, username, hashedPassword);
     const data = helper.emptyOrRows(rows);
     // console.log(rows);
     if (rows) {

@@ -8,6 +8,7 @@ const { extractToken } = require('../middlewares/authMiddleware');
  */
 const register = async (req, res, next) => {
   const { username, email, password, retypePassword } = req.body;
+  console.log('register', username, email, password);
   try {
     const rs = await authService.register(username, email, password, retypePassword);
     console.log(rs);
