@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./databases');
 const helper = require('../helper');
+const sendEmail = require('../utils/email');
 require('dotenv').config();
 
 const login = async (username, password) => {
@@ -30,7 +31,7 @@ const login = async (username, password) => {
   }
 };
 
-const register = async (username, password, retypePassword) => {
+const register = async (username, email, password, retypePassword) => {
   const id = helper.generateUUID();
   try {
     const validationResult = isValidInput(username, password, retypePassword);
@@ -54,11 +55,18 @@ const register = async (username, password, retypePassword) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const rows = await db.user.callSpCreateUser(id, username, hashedPassword);
-    console.log(rows);
+    const rows = await db.user.callSpCreateUser(id, username, email, hashedPassword);
     const data = helper.emptyOrRows(rows);
-    // return rows;
-    return { status: 'success', data: data };
+    // console.log(rows);
+    if (rows) {
+      const emailOptions = {
+        to: email,
+        subject: 'Welcome to our platform!',
+        message: `Thank you for registering, ${username}. You can now log in with your credentials.`
+      };
+      await sendEmail(emailOptions);
+      return { status: 'success', data: data };
+    }
   } catch (error) {
     return { status: 'error', error: error.message };
   }

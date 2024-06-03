@@ -7,9 +7,10 @@ const { extractToken } = require('../middlewares/authMiddleware');
  * @access Public
  */
 const register = async (req, res, next) => {
-  const { username, password, retypePassword } = req.body;
+  const { username, email, password, retypePassword } = req.body;
   try {
-    const rs = await authService.register(username, password, retypePassword);
+    const rs = await authService.register(username, email, password, retypePassword);
+    console.log(rs);
     res.json(rs);
   } catch (error) {
     console.error('Error create user:', error);
