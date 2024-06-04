@@ -73,7 +73,7 @@ const getCourse = async (req, res, next) => {
 };
 
 /**
- * @route GET courses/search?key=
+ * @route GET courses ?search=
  * @desc Search course by description or name
  * @access Public
  */
@@ -86,11 +86,17 @@ const searchCourses = async (req, res, next) => {
     if (!searchTerm) {
       return res.status(400).json({ message: "Please provide a search term" });
     }
-
+    const condition = req.query.condition;
+    if (!condition) {
+      const courses = await courseService.searchCourses(searchTerm);
+      res.json(courses);
+    } else {
+      console.log("second");
+      const courses =
+        await courseService.searchCoursesWithImageAndVideo(searchTerm);
+      res.json(courses);
+    }
     // console.log(`Searching courses for: ${searchTerm}`); // Log the search term
-
-    const courses = await courseService.searchCourses(searchTerm);
-    res.json(courses);
   } catch (error) {
     console.error("Error fetching courses:", error);
     res.status(500).json({ error: "Internal server error" });

@@ -1,5 +1,5 @@
-const mysql = require('mysql2/promise');
-const config = require('../../config');
+const mysql = require("mysql2/promise");
+const config = require("../../config");
 
 const callSpCreateCourse = async (
   id,
@@ -7,7 +7,7 @@ const callSpCreateCourse = async (
   description,
   image,
   video,
-  category_id,
+  category_id
 ) => {
   let conn;
   // console.log(id);
@@ -15,7 +15,7 @@ const callSpCreateCourse = async (
     conn = await mysql.createConnection(config.db);
     const [rows] = await conn.execute(
       `CALL sp_create_course(?, ?, ?, ?, ?, ?)`,
-      [id, name, description, image, video, category_id],
+      [id, name, description, image, video, category_id]
     );
     return rows;
   } catch (error) {
@@ -31,7 +31,7 @@ const callSpGetTotalCourses = async () => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_get_total_courses()');
+    const [rows] = await conn.execute("CALL sp_get_total_courses()");
     console.log(rows);
     return rows;
   } catch (error) {
@@ -62,7 +62,7 @@ const callSpGetAllCourses = async (offset, limitPerPage) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_get_all_courses(?, ?)', [
+    const [rows] = await conn.execute("CALL sp_get_all_courses(?, ?)", [
       offset,
       limitPerPage,
     ]);
@@ -80,7 +80,24 @@ const callSpSearchCourses = async (searchTerm) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_search_course(?)', [searchTerm]);
+    const [rows] = await conn.execute("CALL sp_search_course(?)", [searchTerm]);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+};
+const callSpSearchCoursesWithImageAndVideo = async (searchTerm) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute(
+      "CALL sp_search_with_image_and_video(?)",
+      [searchTerm]
+    );
     return rows;
   } catch (error) {
     throw error;
@@ -97,12 +114,12 @@ const callSpUpdateCourse = async (
   description,
   image,
   video,
-  category_id,
+  category_id
 ) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_update_course(?,?,?,?,?,?)', [
+    const [rows] = await conn.execute("CALL sp_update_course(?,?,?,?,?,?)", [
       id,
       name,
       description,
@@ -124,7 +141,7 @@ const callSpGetPopularCourses = async (sort) => {
   let conn;
   try {
     conn = await mysql.createConnection(config.db);
-    const [rows] = await conn.execute('CALL sp_sort_by_popularity(?)', [sort]);
+    const [rows] = await conn.execute("CALL sp_sort_by_popularity(?)", [sort]);
     return rows;
   } catch (error) {
     throw error;
@@ -133,7 +150,7 @@ const callSpGetPopularCourses = async (sort) => {
       conn.end();
     }
   }
-}
+};
 
 const callSpSearchByCategory = async (sort, category_id) => {
   let conn;

@@ -2,7 +2,7 @@ const config = {
   db: {
     host: 'localhost',
     user: 'root',
-    password: 'mysql',
+    password: '12345678',
     database: 'lms-android',
     connectTimeout: 60000,
     multipleStatements: true,
