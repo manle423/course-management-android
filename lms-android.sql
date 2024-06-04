@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 04, 2024 at 06:56 AM
--- Server version: 8.0.36
+-- Generation Time: Jun 04, 2024 at 07:22 AM
+-- Server version: 8.0.33
 -- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -381,13 +381,18 @@ INSERT INTO `courses` (`course_id`, `course_name`, `description`, `image`, `vide
 ('1258005c-64d8-446e-aae3-dc60faae07cf', 'Cải thiện kỹ năng giao tiếp - Conor Neil', 'Tổng hợp những cách thức, lời khuyên về giao tiếp từ giáo sư Conor Neil thuộc IESE Business School.', 'communication_skills.jpg', 'https://www.youtube.com/playlist?list=PL8EEC66CC5F02545C', 7, 0),
 ('1258005c-64d8-446e-aae3-dc60faae0f7c', 'Java Programming for Beginners – Full Course', 'Khóa học này sẽ cung cấp cho bạn những kiến thức nền tảng về ngôn ngữ Java chỉ trong 4 tiếng.', 'java.jpg', 'https://www.youtube.com/watch?v=A74TOX803D0', 3, 0),
 ('1673770a-1f69-4276-8244-b3203d9bc42f', 'Photoshop for Beginners', 'Sau 3 tiếng đồng hồ với khóa học này, bạn sẽ có thể tự tin làm chủ ứng dụng Photoshop, biến nó thành công cụ đắc lực trong quá trình thiết kế hình ảnh.', 'photoshop_beginner.jpg', 'https://www.youtube.com/watch?v=IyR_uYsRdPs&t=1s', 1, 0),
+('16c7b06f-2241-11ef-8edf-c025a55be5b4', 'Khoa học máy tính', 'Máy tính điện tử, khoa học máy tính, trí tuệ nhân tạo AI', 'https://gyazo.com/9a50af5f4b880f35fc76c0173bbdb9ec\r\n', '\r\nhttps://www.youtube.com/watch?v=NwWNny_ocR4&list=PLnRl-W3gZI79kfp8E7lcDkImtMHA6FIfr&index=2', 4, 0),
+('197d7eb9-2242-11ef-8edf-c025a55be5b4', 'Hướng dẫn chơi guitar (no video)', '30 ngày chinh phục guitar', 'https://gyazo.com/d15bb64f5db6db8e84893cde966d3532', NULL, 5, 0),
 ('208c7361-db53-46ba-adc9-4ea8a7b3f458', 'Java Full Course ☕', 'Toàn bộ những thông tin cơ bản, nền tảng về Java, gói gọn trong 1 khóa học dài 12 tiếng đồng hồ từ Bro Code.', 'java.jpg', 'https://www.youtube.com/watch?v=xk4_1vDrzzo&t=2s', 3, 0),
 ('29c8d915-3024-4299-af1d-3b1096692050', 'Python Full Course 🐍', 'Khóa học này cung cấp những kiến thức nền tảng về Python, đồng thời cho người học áp dụng những kiến thức này vào các dự án đơn giản.', 'python.png', 'https://www.youtube.com/watch?v=XKHEtdqhLK8&t=16867s', 3, 0),
 ('2a7b6451-c01d-4c07-a58e-b9268dfb9a09', 'Chinh Phục Adobe Illustrator - Thùy Uyên', 'Sau khi hoàn thành khóa học này, bạn có thể tự tin làm chủ ứng dụng Adobe Illustrator.', 'illustrator.jpg', 'https://www.youtube.com/watch?v=aQMopS2idcc&list=PL6G5alza0BdSq48VSa1T3ApIkf5Wflb7Q&index=1', 1, 0),
 ('36fb6c53-591d-438d-b87d-460fcec40992', 'Harvard CS50’s Artificial Intelligence with Python', 'Những kiến thức cơ bản nhất về trí tuệ nhân tạo được cung cấp từ giảng viên thuộc đại học Harvard.', 'ai_in_business.jpg', 'https://youtu.be/5NgNicANyqM?si=Owv3vc5YoaHkwZJ1', 4, 0),
+('47f1e6c8-2242-11ef-8edf-c025a55be5b4', 'Khóa học test(no image, video)', 'kiểm tra thỏa mãn yêu cầu bài toán', NULL, NULL, 4, 0),
 ('480380f5-3c70-428e-b512-17bb754875ff', 'Học Guitar cơ bản trong 30 ngày', 'Nếu làm theo khóa học này, bạn sẽ thực sự có thể chơi Guitar chỉ sau 30 ngày. Không tin ư? Bạn cứ vào học là sẽ kiểm chứng được ngay!', 'guitar_beginner.jpg', 'https://www.youtube.com/playlist?list=PLFcgHQh5q7E6hoY5UJMkh1vaY25mPha3W', 5, 0),
 ('48a66180-bf29-4a99-86b6-de2ab7e70055', 'Hello', 'Hello', 'book1.jpg', 'youtube.com', 7, 0),
 ('886b2280-1f24-11ef-b25d-0250835b3290', 'C++ Full Course ⚡️', 'Khóa học cung cấp những kiến thức cơ bản về ngôn ngữ C++, đồng thơi có các bài tập cho người học vận dụng kiến thức đã học.', 'book3.jpg', 'https://www.youtube.com/watch?v=-TkoO8Z07hI', 3, 0),
+('d56e82f2-2241-11ef-8edf-c025a55be5b4', 'Kĩ năng mềm', 'Khóa học kĩ năng mềm thúc đẩy phát triển bản thân và xã hội', 'https://gyazo.com/5609ab30051d89b8bc96092c087d1aac', 'https://www.youtube.com/watch?v=UHchwyp31QM', 7, 0),
+('d56ebfa4-2241-11ef-8edf-c025a55be5b4', 'Tiếng anh (no image)', NULL, NULL, 'https://www.youtube.com/watch?v=CkwfS4kuql4', 2, 0),
 ('fd871af9-cb9c-444d-882c-0c9595ac0f0a', 'Photoshop for beginner', 'bạn muốn đẹp hơn? sao không thử photoshop', 'photoshop_beginner.jpg', 'https://youtu.be/HdxtcBILnow?si=qAVBgVXSEaTtgMYB', 3, 0);
 
 -- --------------------------------------------------------
@@ -443,7 +448,7 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 
 CREATE TABLE `users` (
   `user_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,

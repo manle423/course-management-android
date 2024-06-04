@@ -179,4 +179,5 @@ module.exports = {
   callSpGetTotalCourses,
   callSpGetPopularCourses,
   callSpSearchByCategory,
+  callSpSearchCoursesWithImageAndVideo,
 };

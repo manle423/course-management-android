@@ -117,4 +117,5 @@ module.exports = {
   getTotalCourses,
   getPopularCourses,
   searchByCategory,
+  searchCoursesWithImageAndVideo,
 };
