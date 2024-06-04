@@ -87,7 +87,7 @@ const searchCourses = async (req, res, next) => {
       return res.status(400).json({ message: 'Please provide a search term' });
     }
     const condition = req.query.condition;
-    if (!condition) {
+    if (!condition || condition === "false") {
       const courses = await courseService.searchCourses(searchTerm);
       res.json(courses);
     } else {
