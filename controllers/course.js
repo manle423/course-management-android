@@ -1,4 +1,4 @@
-const courseService = require("../services/course");
+const courseService = require('../services/course');
 
 /**
  * @route POST courses/
@@ -14,13 +14,13 @@ const createCourse = async (req, res, next) => {
       description,
       image,
       video,
-      category_id
+      category_id,
     );
     res.json(rs);
     console.log(rs);
   } catch (error) {
-    console.error("Error creating course:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error creating course:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -34,8 +34,8 @@ const getTotalCourses = async (req, res, next) => {
     const rs = await courseService.getTotalCourses();
     res.json(rs);
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -48,12 +48,12 @@ const getAllCourses = async (req, res, next) => {
   try {
     const page = req.query.page;
     const courses = await courseService.getAllCourses(page);
-    console.log("GetAllCourse");
-    console.log("----------------------");
+    console.log('GetAllCourse');
+    console.log('----------------------');
     res.json(courses);
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -67,8 +67,8 @@ const getCourse = async (req, res, next) => {
     const course = await courseService.getCourse(req.params.id);
     res.json(course);
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -84,22 +84,21 @@ const searchCourses = async (req, res, next) => {
     const searchTerm = req.query.searchTerm;
     console.log(searchTerm);
     if (!searchTerm) {
-      return res.status(400).json({ message: "Please provide a search term" });
+      return res.status(400).json({ message: 'Please provide a search term' });
     }
     const condition = req.query.condition;
     if (!condition) {
       const courses = await courseService.searchCourses(searchTerm);
       res.json(courses);
     } else {
-      console.log("second");
       const courses =
         await courseService.searchCoursesWithImageAndVideo(searchTerm);
       res.json(courses);
     }
     // console.log(`Searching courses for: ${searchTerm}`); // Log the search term
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -119,13 +118,13 @@ const updateCourse = async (req, res, next) => {
       description,
       image,
       video,
-      category_id
+      category_id,
     );
     res.json(rs);
-    console.log("Updated successfully");
+    console.log('Updated successfully');
   } catch (error) {
-    console.error("Error updating course:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error updating course:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -141,17 +140,16 @@ const getPopularCourses = async (req, res, next) => {
     const category_id = req.query.category_id;
     console.log(category_id);
     console.log(sort);
-    if (typeof(category_id) === 'undefined' || category_id === '') {
+    if (typeof category_id === 'undefined' || category_id === '') {
       const rs = await courseService.getPopularCourses(sort);
       res.json(rs);
     } else {
       const rs = await courseService.searchByCategory(sort, category_id);
       res.json(rs);
     }
-    
   } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

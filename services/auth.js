@@ -55,14 +55,19 @@ const register = async (username, email, password, retypePassword) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const rows = await db.user.callSpCreateUser(id, email, username, hashedPassword);
+    const rows = await db.user.callSpCreateUser(
+      id,
+      email,
+      username,
+      hashedPassword,
+    );
     const data = helper.emptyOrRows(rows);
     // console.log(rows);
     if (rows) {
       const emailOptions = {
         to: email,
         subject: 'Welcome to our platform!',
-        message: `Thank you for registering, ${username}. You can now log in with your credentials.`
+        message: `Thank you for registering, ${username}. You can now log in with your credentials.`,
       };
       await sendEmail(emailOptions);
       return { status: 'success', data: data };

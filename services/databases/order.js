@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise");
-const config = require("../../config");
+const mysql = require('mysql2/promise');
+const config = require('../../config');
 
 const callSpCreateOrder = async (id, userId, courseId) => {
   let conn;
@@ -86,7 +86,7 @@ const callSpSortByPopularityDesc = async () => {
       await conn.end();
     }
   }
-}
+};
 
 const callSpSortByPopularityAsc = async () => {
   let conn;
@@ -101,7 +101,7 @@ const callSpSortByPopularityAsc = async () => {
       await conn.end();
     }
   }
-}
+};
 
 module.exports = {
   callSpCreateOrder,

@@ -1,5 +1,5 @@
-const orderService = require("../services/order");
-const { extractToken, decodeToken } = require("../middlewares/authMiddleware");
+const orderService = require('../services/order');
+const { extractToken, decodeToken } = require('../middlewares/authMiddleware');
 
 /**
  * @route POST orders/
@@ -46,8 +46,8 @@ const checkIsUserAttended = async (req, res, next) => {
   const token = extractToken(req);
   const { userId } = decodeToken(token);
   const { course_id } = req.body;
-  console.log("userId: " + userId);
-  console.log("course_id: " + course_id);
+  console.log('userId: ' + userId);
+  console.log('course_id: ' + course_id);
   try {
     const rs = await orderService.checkIsUserAttended(userId, course_id);
     console.log(rs);
