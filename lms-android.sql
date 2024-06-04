@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2024 at 05:58 PM
+-- Generation Time: Jun 04, 2024 at 06:56 AM
 -- Server version: 8.0.36
 -- PHP Version: 7.4.33
 
@@ -176,6 +176,38 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_total_courses` ()   BEGIN
     SELECT course_count;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_by_category` (IN `p_order` VARCHAR(4), IN `p_category_id` INT)   BEGIN
+    IF p_order = 'asc' THEN
+        SELECT
+            c.*,
+            COUNT(o.order_id) AS order_count
+        FROM
+            courses c
+        LEFT JOIN
+            orders o ON c.course_id = o.course_id
+        WHERE
+        	c.category_id = p_category_id
+        GROUP BY
+            c.course_id
+        ORDER BY
+            order_count ASC;
+    ELSE
+        SELECT
+            c.*,
+            COUNT(o.order_id) AS order_count
+        FROM
+            courses c
+        LEFT JOIN
+            orders o ON c.course_id = o.course_id
+        WHERE
+        	c.category_id = p_category_id
+        GROUP BY
+            c.course_id
+        ORDER BY
+            order_count DESC;
+    END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_category_by_id` (IN `id` INT)   BEGIN
     SELECT * FROM categories WHERE category_id = id;
 END$$
@@ -200,6 +232,13 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_user_by_username` (IN `p_username` VARCHAR(255))   BEGIN
     SELECT * FROM users WHERE username = p_username;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_search_with_image_and_video` (IN `p_key` TEXT)   BEGIN
+    SELECT * 
+    FROM courses 
+    WHERE (image IS NOT NULL AND video IS NOT NULL)
+    AND (course_name LIKE CONCAT('%', p_key, '%') OR description LIKE CONCAT('%', p_key, '%'));
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_sort_by_popularity` (IN `p_order` VARCHAR(4))   BEGIN

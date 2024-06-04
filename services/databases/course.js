@@ -135,6 +135,21 @@ const callSpGetPopularCourses = async (sort) => {
   }
 }
 
+const callSpSearchByCategory = async (sort, category_id) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(config.db);
+    const [rows] = await conn.execute('CALL sp_search_by_category(?, ?)', [sort, category_id]);
+    return rows;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.end();
+    }
+  }
+}
+
 module.exports = {
   callSpCreateCourse,
   callSpGetAllCourses,
@@ -143,4 +158,5 @@ module.exports = {
   callSpUpdateCourse,
   callSpGetTotalCourses,
   callSpGetPopularCourses,
+  callSpSearchByCategory,
 };

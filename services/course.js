@@ -89,8 +89,14 @@ const updateCourse = async (
 };
 
 const getPopularCourses = async (sort) => {
-  console.log(sort);
+  // console.log(sort);
   const [rows] = await db.course.callSpGetPopularCourses(sort);
+  const data = helper.emptyOrRows(rows);
+  return data;
+}
+
+const searchByCategory = async (sort, category) => {
+  const [rows] = await db.course.callSpSearchByCategory(sort, category);
   const data = helper.emptyOrRows(rows);
   return data;
 }
@@ -103,4 +109,5 @@ module.exports = {
   updateCourse,
   getTotalCourses,
   getPopularCourses,
+  searchByCategory,
 };
